@@ -4520,6 +4520,17 @@ class Ui_IIT(object):
 #####################clicked connect  #################  
 ####################   part1    ##########################
         self.Connect_to_device.clicked.connect(self.Connect_to_device_clicked)
+
+#################### part2  ########################
+        self.Engage_button.clicked.connect(self.Engage_button_clicked)
+        
+        self.UP.clicked.connect(self.UP_button_clicked)
+
+        self.Down.clicked.connect(self.Down_button_clicked)
+
+        self.Start_button.clicked.connect(self.start_button_clicked)
+
+
 ###################################################     
 ################### functions methods #################
 ######################   part 1   ######################
@@ -4548,7 +4559,20 @@ class Ui_IIT(object):
             except (OSError, serial.SerialException):
                 pass
         return result
-
+################################ part2  #################
+    def Engage_button_clicked(self):
+        self.Engage_testflow.setStyleSheet("background-color: rgb(3,201,69)")
+        self.Engage_testflow.setEnabled(True)
+    def UP_button_clicked(self):
+        self.Indentor_move_testflow.setStyleSheet("background-color: rgb(3,201,69)")
+        self.Indentor_move_testflow.setEnabled(True)
+    def Down_button_clicked(self):
+        self.Indentor_move_testflow.setStyleSheet("background-color: rgb(3,201,69)")
+        self.Indentor_move_testflow.setEnabled(True)
+    def start_button_clicked(self):
+        self.Test_start_testflow.setStyleSheet("background-color: rgb(3,201,69)")
+        self.Test_start_testflow.setEnabled(True)
+          
           
           
           
@@ -4564,7 +4588,7 @@ class Ui_IIT(object):
         self.TestFlow_gropbox.setTitle(_translate("IIT", "Test Flow"))
         self.Indentor_move_testflow.setText(_translate("IIT", "Indentor Move"))
         self.Engage_testflow.setText(_translate("IIT", "Engage"))
-        self.Test_start_testflow.setText(_translate("IIT", "Test srart"))
+        self.Test_start_testflow.setText(_translate("IIT", "Test start"))
         self.End_start_testflow.setText(_translate("IIT", "End start"))
         self.Move_up_testflow.setText(_translate("IIT", "Move up"))
         self.Engage_groupbox.setTitle(_translate("IIT", "Engage"))
