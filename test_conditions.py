@@ -1894,11 +1894,11 @@ class Ui_test_conditions(object):
 from pyqtgraph import PlotWidget
 
 
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    test_conditions = QtWidgets.QDialog()
-    ui = Ui_test_conditions()
-    ui.setupUi(test_conditions)
-    test_conditions.show()
-    sys.exit(app.exec_())
+# if __name__ == "__main__":
+#     import sys
+#     app = QtWidgets.QApplication(sys.argv)
+#     test_conditions = QtWidgets.QDialog()
+#     ui = Ui_test_conditions()
+#     ui.setupUi(test_conditions)
+#     test_conditions.show()
+#     sys.exit(app.exec_())
