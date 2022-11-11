@@ -9,6 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from pyqtgraph import PlotWidget
 
 
 class Ui_test_conditions(object):
@@ -1891,8 +1892,93 @@ class Ui_test_conditions(object):
         item.setText(_translate("test_conditions", "Holding time"))
         self.Update_data_curve.setText(_translate("test_conditions", "Update Data/Curve"))
         self.Save_close.setText(_translate("test_conditions", "Save and Close"))
-from pyqtgraph import PlotWidget
+##################### connect clicked   ######################
+        self.Update_data_curve.clicked.connect(self.Update_data_curve_clicked)
 
+################### FUNCTIONS methods ############################
+    def Update_data_curve_clicked(self):
+        
+        cycle_number = self.lineEdit_cycle_number.text()
+
+        maximum_depth = self.lineEdit_max_depth.text()
+
+        unloading_ratio = self.lineEdit_Unloading_Ratio.text()
+
+        loading_rate= self.lineEdit_loading_rate.text()
+
+        holding_time = self.lineEdit_holding_time.text()
+        
+        print(cycle_number,maximum_depth,unloading_ratio,loading_rate,holding_time)
+        self.table_data.setSortingEnabled(False)
+        self.table_data.setRowCount(int(cycle_number)*4)
+
+
+        #######
+        cycle = 1 #  cycle number set for 4 row and increase after 4 row 
+        num = 0 # step set num first 1 and after 2 ,3 4 after that again 1 
+        depth_level = int(maximum_depth)/int(cycle_number) # depth every cycle in test 1,2 every cycle
+        Unloading_Ratio = 0 # unloading rate first type data.
+        loading_rate_set = float(loading_rate)
+        holding_time_set = 0
+        
+        for i in range(0,int(cycle_number)*4):
+            item_row = QtWidgets.QTableWidgetItem()
+            self.table_data.setVerticalHeaderItem(i, item_row)
+            item = self.table_data.verticalHeaderItem(i)
+            item.setText(f"{i+1}")
+            
+            for j in range(7):
+                item_every_blank_table = QtWidgets.QTableWidgetItem()
+                self.table_data.setItem(i, j, item_every_blank_table)
+            ###### column number ##############
+            item = self.table_data.item(i, 0)
+            item.setText(f"{i+1}")
+            ###### column number cycle ##############
+            if i%4 == 0 and i >0:
+                cycle = cycle + 1
+                num = 0
+                
+            item = self.table_data.item(i, 1)
+            item.setText(f"{cycle}")
+            ######## column step  ###########
+            item = self.table_data.item(i, 2)
+            num = num + 1
+            item.setText(f"{num}")
+            
+            ####### end depth ################
+            if i%2 == 0 and i>0 and i%4!=0:
+                depth_level_before = depth_level
+                depth_level = (depth_level*int(unloading_ratio))/100
+            if i%4 ==0 and i>0:
+                depth_level = depth_level_before + int(maximum_depth)/int(cycle_number)
+            item = self.table_data.item(i, 3)
+            item.setText(f"{depth_level}")
+            
+            ######### Unloading Ratio ###########
+            if i%2 == 0 and i>0:
+                if Unloading_Ratio == 0:
+                    Unloading_Ratio =  int(unloading_ratio)
+                else:
+                    Unloading_Ratio = 0
+            item = self.table_data.item(i, 4)
+            item.setText(f"{Unloading_Ratio}")
+
+                
+            ############## Loading Rate #############
+            item = self.table_data.item(i, 5)
+            item.setText(f"{loading_rate_set}")
+            ######################################
+            if loading_rate_set == 0:
+                loading_rate_set = float(loading_rate)
+            else:
+                loading_rate_set = 0
+            ########### Holding time ##########
+            item = self.table_data.item(i, 6)
+            item.setText(f"{holding_time_set}")
+            if holding_time_set == float(holding_time):
+                holding_time_set = 0
+            else:
+                holding_time_set = float(holding_time)
 
 # if __name__ == "__main__":
 #     import sys
