@@ -1404,7 +1404,7 @@ color: rgb(255, 255, 255);
        </rect>
       </property>
       <property name="text">
-       <string>Test srart</string>
+       <string>Test start</string>
       </property>
      </widget>
      <widget class="QPushButton" name="End_start_testflow">
@@ -1919,7 +1919,7 @@ QPushButton:pressed {
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>engage.png</normaloff>engage.png</iconset>
+        <normaloff>C:/Users/Mohammad/.designer/backup/engage.png</normaloff>C:/Users/Mohammad/.designer/backup/engage.png</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -4931,7 +4931,7 @@ QPushButton:pressed {
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>Start.ico</normaloff>Start.ico</iconset>
+        <normaloff>C:/Users/Mohammad/.designer/backup/Start.ico</normaloff>C:/Users/Mohammad/.designer/backup/Start.ico</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -7342,7 +7342,7 @@ color: rgb(255, 255, 255);
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap>IIT_pic.png</pixmap>
+       <pixmap>C:/Users/Mohammad/.designer/backup/IIT_pic.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -8751,7 +8751,7 @@ QPushButton:pressed {
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>down.png</normaloff>down.png</iconset>
+        <normaloff>C:/Users/Mohammad/.designer/backup/down.png</normaloff>C:/Users/Mohammad/.designer/backup/down.png</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -9214,7 +9214,7 @@ QPushButton:pressed {
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>stop.png</normaloff>stop.png</iconset>
+        <normaloff>C:/Users/Mohammad/.designer/backup/stop.png</normaloff>C:/Users/Mohammad/.designer/backup/stop.png</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -9711,7 +9711,7 @@ QPushButton:pressed {
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>up.png</normaloff>up.png</iconset>
+        <normaloff>C:/Users/Mohammad/.designer/backup/up.png</normaloff>C:/Users/Mohammad/.designer/backup/up.png</iconset>
       </property>
       <property name="iconSize">
        <size>
