@@ -10,6 +10,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from pyqtgraph import PlotWidget
+import pyqtgraph as pg
 
 
 class Ui_test_conditions(object):
@@ -1843,9 +1844,30 @@ class Ui_test_conditions(object):
         self.frame_right.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_right.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_right.setObjectName("frame_right")
+        #################### plot ########################
+
+        #Add Background colour to white
+        self.widget_plot.setBackground('w')
+        # Add Title
+        self.widget_plot.setTitle("Loading path", color="b", size="5pt")
+        # Add Axis Labels
+        styles = {"color": "#000000", "font-size": "20px"}
+        self.widget_plot.setLabel("left", "Depth(um)", **styles)
+        self.widget_plot.setLabel("bottom", "time (s)", **styles)
+        #Add legend
+        self.widget_plot.addLegend()
+        #Add grid
+        #Set Range
+        self.widget_plot.setXRange(0, 50, padding=0)
+        self.widget_plot.setYRange(0, 200, padding=0)
+
+
 
         self.retranslateUi(test_conditions)
         QtCore.QMetaObject.connectSlotsByName(test_conditions)
+        
+        ##################### connect clicked   ######################
+        self.Update_data_curve.clicked.connect(self.Update_data_curve_clicked)
 
     def retranslateUi(self, test_conditions):
         _translate = QtCore.QCoreApplication.translate
@@ -1859,6 +1881,7 @@ class Ui_test_conditions(object):
         self.lineEdit_operator.setText(_translate("test_conditions", "znu"))
         self.lineEdit_Specimen.setText(_translate("test_conditions", "unknown"))
         self.lineEdit_Indentor.setText(_translate("test_conditions", "S0001"))
+        self.lineEdit_Indentor_raduis.setText(_translate("test_conditions", "0.5"))
         self.test_condition_groupbox.setTitle(_translate("test_conditions", "test conditions"))
         self.control_mode.setText(_translate("test_conditions", "control Mode"))
         self.cycle_number.setText(_translate("test_conditions", "Cycle number"))
@@ -1892,8 +1915,7 @@ class Ui_test_conditions(object):
         item.setText(_translate("test_conditions", "Holding time"))
         self.Update_data_curve.setText(_translate("test_conditions", "Update Data/Curve"))
         self.Save_close.setText(_translate("test_conditions", "Save and Close"))
-##################### connect clicked   ######################
-        self.Update_data_curve.clicked.connect(self.Update_data_curve_clicked)
+
 
 ################### FUNCTIONS methods ############################
     def Update_data_curve_clicked(self):
@@ -1979,6 +2001,10 @@ class Ui_test_conditions(object):
                 holding_time_set = 0
             else:
                 holding_time_set = float(holding_time)
+            time = [0,11,11,23,23,32,32]
+            depth = [0,50,25,100,50,150,0]
+            pen = pg.mkPen(color=(100, 100, 100), width=5)
+            self.widget_plot.plot(time, depth, pen=pen)
 
 # if __name__ == "__main__":
 #     import sys
