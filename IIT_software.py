@@ -4539,6 +4539,10 @@ class Ui_IIT(object):
         self.Down.released.connect(self.Down_button_released)
         self.UP.pressed.connect(self.up_button_pressed)
         self.UP.released.connect(self.up_button_released)
+        ####################
+        self.Manual.toggled.connect(lambda:self.btnstate(self.Manual))
+        self.Specific.toggled.connect(lambda:self.btnstate(self.Specific))
+
 
 ###################################################     
 ################### functions methods #################
@@ -4621,6 +4625,17 @@ class Ui_IIT(object):
         self.Down_limited.setStyleSheet("")
         self.Down_limited.setEnabled(False)      
           
+    def btnstate(self,choice):
+      if choice.text() == "Manual":
+         if choice.isChecked() == True:
+            self.Specific_move_speed.setEnabled(False)
+            self.Manual_move_speed.setEnabled(True)
+
+				
+      if choice.text() == "Specific":
+         if choice.isChecked() == True:
+            self.Specific_move_speed.setEnabled(True)
+            self.Manual_move_speed.setEnabled(False)
           
           
           
