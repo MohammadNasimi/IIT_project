@@ -4534,7 +4534,11 @@ class Ui_IIT(object):
         self.Start_button.clicked.connect(self.start_button_clicked)
 ################### part 3 ###################
         self.save_here.clicked.connect(self.save_here_clicked)
-
+############## part 4,5 #############################
+        self.Down.pressed.connect(self.Down_button_pressed)
+        self.Down.released.connect(self.Down_button_released)
+        self.UP.pressed.connect(self.up_button_pressed)
+        self.UP.released.connect(self.up_button_released)
 
 ###################################################     
 ################### functions methods #################
@@ -4583,8 +4587,39 @@ class Ui_IIT(object):
                                                "", "All Files (*);;Exel file(*.xlsx);;Text Files (*.txt);;Python Files (*.py)")
             if check:
                 self.lineEdit_save_here.setText(file)
+########################### part 4,5 #############################################
+    def up_button_pressed(self):
+        self.UP_limited.setStyleSheet("background-color: green")
+        self.UP_limited.setEnabled(True)  
+        if self.Manual.isChecked() == True:
+            content = self.Manual_move_speed.currentText()
+            print(content)
+        elif self.Specific.isChecked() == True:
+            move_speed_specific_text = self.Specific_move_speed.text()
+            if move_speed_specific_text == "":
+                move_speed_specific_text = "10"
+            print(move_speed_specific_text)
+        
+    def up_button_released(self):
+        self.UP_limited.setStyleSheet("")
+        self.UP_limited.setEnabled(False)  
+        
+        
+    def Down_button_pressed(self):
+        self.Down_limited.setStyleSheet("background-color: red")
+        self.Down_limited.setEnabled(True)  
+        if self.Manual.isChecked() == True:
+            content = self.Manual_move_speed.currentText()
+            print(content)
+        elif self.Specific.isChecked() == True:
+            move_speed_specific_text = self.Specific_move_speed.text()
+            if move_speed_specific_text == "":
+                move_speed_specific_text = "10"
+            print(move_speed_specific_text)
           
-          
+    def Down_button_released(self):
+        self.Down_limited.setStyleSheet("")
+        self.Down_limited.setEnabled(False)      
           
           
           
