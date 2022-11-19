@@ -4542,6 +4542,12 @@ class Ui_IIT(object):
         ####################
         self.Manual.toggled.connect(lambda:self.btnstate(self.Manual))
         self.Specific.toggled.connect(lambda:self.btnstate(self.Specific))
+        ########################
+        self.STOP.clicked.connect(self.stop_button_clicked)
+        self.Zero_button.clicked.connect(self.Zero_button_clicked)
+        self.Initilize.clicked.connect(self.Initilize_button_clicked)
+
+        
 
 
 ###################################################     
@@ -4636,7 +4642,13 @@ class Ui_IIT(object):
          if choice.isChecked() == True:
             self.Specific_move_speed.setEnabled(True)
             self.Manual_move_speed.setEnabled(False)
-          
+    def stop_button_clicked(serlf):
+            print("stop")
+    def Zero_button_clicked(self):
+            self.label_load.setText("0")
+    def Initilize_button_clicked(self):
+            speed_data = self.SPS_list.currentText()
+            print(speed_data)
           
           
           
