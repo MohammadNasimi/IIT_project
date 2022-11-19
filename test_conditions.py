@@ -11,7 +11,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from pyqtgraph import PlotWidget
 import pyqtgraph as pg
-
+from  IIT_software import Ui_IIT
 
 class Ui_test_conditions(object):
     def setupUi(self, test_conditions):
@@ -1868,6 +1868,8 @@ class Ui_test_conditions(object):
         
         ##################### connect clicked   ######################
         self.Update_data_curve.clicked.connect(self.Update_data_curve_clicked)
+        self.Save_close.clicked.connect(self.save_close_clicked)
+
 
     def retranslateUi(self, test_conditions):
         _translate = QtCore.QCoreApplication.translate
@@ -2005,7 +2007,11 @@ class Ui_test_conditions(object):
             depth = [0,50,25,100,50,150,0]
             pen = pg.mkPen(color=(100, 100, 100), width=5)
             self.widget_plot.plot(time, depth, pen=pen)
-
+    def save_close_clicked(self):
+        a = Ui_IIT()
+        #<__main__.Ui_IIT object at 0x000001464CD3F910>
+        print(a)
+        
 # if __name__ == "__main__":
 #     import sys
 #     app = QtWidgets.QApplication(sys.argv)
