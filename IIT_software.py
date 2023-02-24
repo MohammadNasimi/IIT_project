@@ -4632,7 +4632,9 @@ class Ui_IIT(object):
           
     def Down_button_released(self):
         self.Down_limited.setStyleSheet("")
-        self.Down_limited.setEnabled(False)      
+        self.Down_limited.setEnabled(False) 
+        # send to arduino
+        print(f"stop")     
           
     def btnstate(self,choice):
       if choice.text() == "Manual":
