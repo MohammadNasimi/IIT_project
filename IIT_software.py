@@ -4621,13 +4621,14 @@ class Ui_IIT(object):
         self.Down_limited.setStyleSheet("background-color: red")
         self.Down_limited.setEnabled(True)  
         if self.Manual.isChecked() == True:
-            content = self.Manual_move_speed.currentText()
-            print(content)
+            speed = self.Manual_move_speed.currentText()
         elif self.Specific.isChecked() == True:
-            move_speed_specific_text = self.Specific_move_speed.text()
-            if move_speed_specific_text == "":
-                move_speed_specific_text = "10"
-            print(move_speed_specific_text)
+            speed = self.Specific_move_speed.text()
+            if speed == "":
+                speed = "10"
+        # send to arduino
+        # kind 1,0 ,direct 1,0, speed
+        print(f"1,0,{speed}")
           
     def Down_button_released(self):
         self.Down_limited.setStyleSheet("")
