@@ -4589,8 +4589,9 @@ class Ui_IIT(object):
         self.Indentor_move_testflow.setStyleSheet("background-color: rgb(3,201,69)")
         self.Indentor_move_testflow.setEnabled(True)
     def start_button_clicked(self):
-        self.Test_start_testflow.setStyleSheet("background-color: rgb(3,201,69)")
-        self.Test_start_testflow.setEnabled(True)
+        if self.Engage_testflow.isEnabled() == True:
+                self.Test_start_testflow.setStyleSheet("background-color: rgb(3,201,69)")
+                self.Test_start_testflow.setEnabled(True)
 ################################# part3 ########################
     def save_here_clicked(self):
             file , check = QFileDialog.getSaveFileName(None, "QFileDialog.getOpenFileName()",
