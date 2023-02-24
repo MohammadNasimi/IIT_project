@@ -4652,8 +4652,9 @@ class Ui_IIT(object):
     def Zero_button_clicked(self):
             self.label_load.setText("0")
     def Initilize_button_clicked(self):
-            speed_data = self.SPS_list.currentText()
-            print(speed_data)
+            sample_per_second = self.SPS_list.currentText()
+            #send to arduino
+            print(sample_per_second)
           
           
           
@@ -4697,8 +4698,8 @@ class Ui_IIT(object):
         self.Depth.setText(_translate("IIT", "Depth:"))
         self.Zero_button.setText(_translate("IIT", "Zero"))
         self.SPS.setText(_translate("IIT", "SPS:"))
-        self.SPS_list.setCurrentText(_translate("IIT", "Normal(15)"))
-        self.SPS_list.setItemText(0, _translate("IIT", "Normal(15)"))
+        self.SPS_list.setCurrentText(_translate("IIT", "Normal(12.5)"))
+        self.SPS_list.setItemText(0, _translate("IIT", "Normal(12.5)"))
         self.SPS_list.setItemText(1, _translate("IIT", "Slowest(1.875)"))
         self.SPS_list.setItemText(2, _translate("IIT", "Slow(2.5)"))
         self.SPS_list.setItemText(3, _translate("IIT", "Fast (15)"))
