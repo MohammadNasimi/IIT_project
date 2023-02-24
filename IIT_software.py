@@ -4559,6 +4559,14 @@ class Ui_IIT(object):
         time.sleep(2)
         self.conditions_connections.setText('connected')
         print(com_connect_arduino)
+        ##### get load cell and lvdt  data  of arduino and show in software
+        from random import randint
+        a = randint(0,100)     
+        self.label_load.setText(f"{a}")
+        self.label_Depth.setText(f"{a}")
+                
+
+
         
     def serial_ports(self):
         if sys.platform.startswith('win'):
