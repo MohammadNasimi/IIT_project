@@ -1920,6 +1920,8 @@ class Ui_test_conditions(object):
 
 ################### FUNCTIONS methods ############################
     def Update_data_curve_clicked(self):
+        from datetime import date
+        self.lineEdit_date.setText(f"{date.today()}")
         
         cycle_number = self.lineEdit_cycle_number.text()
 
@@ -2008,19 +2010,18 @@ class Ui_test_conditions(object):
             pen = pg.mkPen(color=(100, 100, 100), width=5)
             self.widget_plot.plot(time, depth, pen=pen)
     def save_close_clicked(self):
+        operator = self.lineEdit_operator.text()
+        specimen = self.lineEdit_Specimen.text()
+        Indentor = self.lineEdit_Indentor.text()
+        Indentor_raduis = self.lineEdit_Indentor_raduis.text()
         cycle_number = self.lineEdit_cycle_number.text()
-
         maximum_depth = self.lineEdit_max_depth.text()
-
         unloading_ratio = self.lineEdit_Unloading_Ratio.text()
-
         loading_rate= self.lineEdit_loading_rate.text()
-
         holding_time = self.lineEdit_holding_time.text()
         
-        print(cycle_number,maximum_depth,unloading_ratio,loading_rate,holding_time)
         with open("data.txt", "w") as f:
-                f.write(f"{cycle_number},{maximum_depth},{unloading_ratio},{loading_rate},{holding_time}")
+                f.write(f"{operator},{specimen},{Indentor},{Indentor_raduis},{cycle_number},{maximum_depth},{unloading_ratio},{loading_rate},{holding_time}")
         # send another window data 
 #         cycle_number = self.lineEdit_cycle_number.text()
 #         self.window = QtWidgets.QMainWindow()

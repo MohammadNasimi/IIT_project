@@ -4609,21 +4609,28 @@ class Ui_IIT(object):
                         contents = f.read()
                         list_data = contents.split(",")
                 # set text 
-                cycle_number = self.label_cycle_number.setText(list_data[0])
-
-                maximum_depth = self.label_Maximum_Depth.setText(list_data[1])
-
-                unloading_ratio = self.label_Unloading_ratio.setText(list_data[2])
-
-                loading_rate= self.label_Loading_time.setText(list_data[3])
-
-                holding_time = self.label_Holding_time.setText(list_data[4])
-
+                from datetime import date
+                self.label_Date.setText(f"{date.today()}")
                 
+                self.lineEdit_testname.setText(list_data[0]+list_data[1] + f"{date.today()}")
+
+                self.label_Indentor_Raduis.setText(list_data[3])
+                
+                self.label_cycle_number.setText(list_data[4])
+
+                self.label_Maximum_Depth.setText(list_data[5])
+
+                self.label_Unloading_ratio.setText(list_data[6])
+
+                self.label_Loading_time.setText(list_data[7])
+
+                self.label_Holding_time.setText(list_data[8])
+
 ################################# part3 ########################
     def save_here_clicked(self):
+            name =self.lineEdit_testname.text()
             file , check = QFileDialog.getSaveFileName(None, "QFileDialog.getOpenFileName()",
-                                               "", "All Files (*);;Exel file(*.xlsx);;Text Files (*.txt);;Python Files (*.py)")
+                                               f"{name}", "All Files (*);;Exel file(*.xlsx);;Text Files (*.txt);;Python Files (*.py)")
             if check:
                 self.lineEdit_save_here.setText(file)
 ########################### part 4,5 #############################################
