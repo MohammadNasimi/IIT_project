@@ -4625,7 +4625,10 @@ class Ui_IIT(object):
                 self.label_Loading_time.setText(list_data[7])
 
                 self.label_Holding_time.setText(list_data[8])
-
+                
+                # send data to arduino after click in start button 
+                print(f"{list_data[3]} ,{list_data[4]} ,{list_data[5]},{list_data[6]},{list_data[7]},{list_data[8]}")
+                
 ################################# part3 ########################
     def save_here_clicked(self):
             name =self.lineEdit_testname.text()
