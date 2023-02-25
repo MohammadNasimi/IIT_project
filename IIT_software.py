@@ -15,7 +15,6 @@ import test_conditions as tc
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-
 class Ui_IIT(object):
     def setupUi(self, IIT):
         IIT.setObjectName("IIT")
@@ -4600,6 +4599,27 @@ class Ui_IIT(object):
         if self.Engage_testflow.isEnabled() == True:
                 self.Test_start_testflow.setStyleSheet("background-color: rgb(3,201,69)")
                 self.Test_start_testflow.setEnabled(True)
+                # get data another main window 
+                #####test_conditions
+                # test_conditions = QtWidgets.QMainWindow()
+                # ui = tc.Ui_test_conditions()
+                # ui.setupUi(test_conditions)
+                # print(ui.lineEdit_cycle_number.text())
+                with open('data.txt') as f:
+                        contents = f.read()
+                        list_data = contents.split(",")
+                # set text 
+                cycle_number = self.label_cycle_number.setText(list_data[0])
+
+                maximum_depth = self.label_Maximum_Depth.setText(list_data[1])
+
+                unloading_ratio = self.label_Unloading_ratio.setText(list_data[2])
+
+                loading_rate= self.label_Loading_time.setText(list_data[3])
+
+                holding_time = self.label_Holding_time.setText(list_data[4])
+
+                
 ################################# part3 ########################
     def save_here_clicked(self):
             file , check = QFileDialog.getSaveFileName(None, "QFileDialog.getOpenFileName()",
