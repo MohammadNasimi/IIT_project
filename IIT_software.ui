@@ -3913,7 +3913,7 @@ color: rgb(255, 255, 255);
        </rect>
       </property>
       <property name="text">
-       <string>Loading Time:</string>
+       <string>Loading Rate:</string>
       </property>
      </widget>
      <widget class="QLabel" name="Holding_time">
@@ -3968,7 +3968,7 @@ color: rgb(255, 255, 255);
        <string/>
       </property>
      </widget>
-     <widget class="QLabel" name="label_Loading_time">
+     <widget class="QLabel" name="label_Loading_Rate">
       <property name="geometry">
        <rect>
         <x>110</x>
