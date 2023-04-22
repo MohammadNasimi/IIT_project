@@ -14,6 +14,8 @@ import test_conditions as tc
 from PyQt5.QtWidgets import QMessageBox
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+#####code mechanical properties ##########
+from code_properties_for_software import *
 
 class Ui_IIT(object):
     def setupUi(self, IIT):
@@ -4632,7 +4634,8 @@ class Ui_IIT(object):
                 # send data to arduino after click in start button 
                 # first is kind move and we need it in arduino 2 sign start check in arduino
                 print(f"2,{list_data[3]} ,{list_data[4]} ,{list_data[5]},{list_data[6]},{list_data[7]},{list_data[8]}")
-                
+                global lvdt,loadcell
+                lvdt,loadcell=list_data_lvdt_loadcell()
 ################################# part3 ########################
     def save_here_clicked(self):
             name =self.lineEdit_testname.text()
@@ -4707,23 +4710,26 @@ class Ui_IIT(object):
         indentations_interval = self.lineEdit_indentations_interval.text()
         Tol1 = self.lineEdit_Tol1.text()
         Tol2 = self.lineEdit_Tol2.text()
-        if Radius == "" or Insert_strain=='' or first_indentation_depth == '' or\
+        if Radius == "" or Insert_strain=='' or number_cycle == ''or first_indentation_depth == '' or\
                 indentations_interval == '' or Tol1 =='' or Tol2 =='':
                 QMessageBox.about(self.iit, "mechanical properties", "please fill all parameters")
-        else:
-                try:         
-                        Radius = int(Radius)
-                        Insert_strain = int(Insert_strain)
-                        number_cycle = int(number_cycle)
-                        first_indentation_depth = int(first_indentation_depth)
-                        indentations_interval =int(indentations_interval)
-                        Tol1 = int(Tol1)
-                        Tol2 = int(Tol2)
-                except:
-                        QMessageBox.about(self.iit, "mechanical properties", "fill with float")
+
+        try:         
+                Radius = float(Radius)
+                Insert_strain = float(Insert_strain)
+                number_cycle = int(number_cycle)
+                first_indentation_depth = float(first_indentation_depth)
+                indentations_interval =float(indentations_interval)
+                Tol1 = float(Tol1)
+                Tol2 = float(Tol2)
+        except:
+                QMessageBox.about(self.iit, "mechanical properties", "fill with float")
 
         print(Radius,Insert_strain,number_cycle,indentations_interval,first_indentation_depth,Tol1,Tol2)
-  
+        # print(lvdt,loadcell)
+        estimate_mechanical_properties(lvdt,loadcell,Radius,Insert_strain,number_cycle,indentations_interval,first_indentation_depth,Tol1,Tol2)
+
+        
           
 #######################################################################    
     def retranslateUi(self, IIT):
@@ -4807,6 +4813,19 @@ class Ui_IIT(object):
         self.actionNew.setText(_translate("IIT", "New"))
         self.actionopen.setText(_translate("IIT", "open"))
         self.actionabout.setText(_translate("IIT", "about"))
+        ###### initialize the mechanical properties parameters
+        self.lineEdit_Radius.setText(_translate("IIT", "0.79"))
+        self.lineEdit_Insert_strain.setText(_translate("IIT", "0.2"))
+        self.lineEdit_number_cycle.setText(_translate("IIT", "9"))
+        self.lineEdit_first_indentation_depth.setText(_translate("IIT", "0.01"))
+        self.lineEdit_indentations_interval.setText(_translate("IIT", "0.01"))
+        self.lineEdit_Tol1.setText(_translate("IIT", "0.01"))
+        self.lineEdit_Tol2.setText(_translate("IIT", "0.01"))
+
+
+
+
+
         
 if __name__ == "__main__":
     import sys
