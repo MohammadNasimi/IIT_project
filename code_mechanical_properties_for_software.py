@@ -123,15 +123,15 @@ def estimate_mechanical_properties(Row_1,Row_2,R,n,m,h,d,to1,tol2,si = 20):
         else:
             ey = ee[j+1]
             sy = k*ee[j+1]**n
-            print('ey=',ey)
-            print('sy=',sy)
+            # print('ey=',ey)
+            # print('sy=',sy)
             break
         
-    print('k=',k)
-    print('E=',E)
-    print('n=',n)
-    print('elastic=',E*ey)
-    print('plastic=',k*ey**N)
+    # print('k=',k)
+    # print('E=',E)
+    # print('n=',n)
+    # print('elastic=',E*ey)
+    # print('plastic=',k*ey**N)
     x1 = np.array([0,sy/E])
     x2 = np.array([ey,0.02,0.03,0.04,0.05,0.06,0.07,0.09,0.1,0.15,0.25])
     plt.xlabel('Stress')
@@ -143,6 +143,7 @@ def estimate_mechanical_properties(Row_1,Row_2,R,n,m,h,d,to1,tol2,si = 20):
     plt.plot(sy/E,sy+0.02,'r.',markersize=10)
     plt.pause(1000)
     plt.show()
+    return ey,sy,k,E,n
 
 
 
