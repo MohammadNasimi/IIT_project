@@ -4813,6 +4813,7 @@ class Ui_IIT(object):
         self.actionNew.setText(_translate("IIT", "New"))
         self.actionopen.setText(_translate("IIT", "open"))
         self.actionabout.setText(_translate("IIT", "about"))
+        
         ###### initialize the mechanical properties parameters
         self.lineEdit_Radius.setText(_translate("IIT", "0.79"))
         self.lineEdit_Insert_strain.setText(_translate("IIT", "0.2"))
