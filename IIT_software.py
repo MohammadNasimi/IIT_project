@@ -15,7 +15,7 @@ from PyQt5.QtWidgets import QMessageBox
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 #####code mechanical properties ##########
-from code_properties_for_software import *
+from code_mechanical_properties_for_software import *
 
 class Ui_IIT(object):
     def setupUi(self, IIT):
@@ -4727,7 +4727,8 @@ class Ui_IIT(object):
 
         print(Radius,Insert_strain,number_cycle,indentations_interval,first_indentation_depth,Tol1,Tol2)
         # print(lvdt,loadcell)
-        estimate_mechanical_properties(lvdt,loadcell,Radius,Insert_strain,number_cycle,indentations_interval,first_indentation_depth,Tol1,Tol2)
+        global ey,sy,k,E,n
+        ey,sy,k,E,n = estimate_mechanical_properties(lvdt,loadcell,Radius,Insert_strain,number_cycle,indentations_interval,first_indentation_depth,Tol1,Tol2)
 
         
           
