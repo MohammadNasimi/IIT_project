@@ -141,8 +141,8 @@ def estimate_mechanical_properties(Row_1,Row_2,R,n,m,h,d,to1,tol2,si = 20):
     plt.plot(x2, power_fit(x2,k,N),c='red',ls='-',lw=2) #plasti
     plt.pause(0.05)
     plt.plot(sy/E,sy+0.02,'r.',markersize=10)
-    plt.pause(1000)
-    plt.show()
+    plt.pause(1)
+    plt.show(block=False)
     return ey,sy,k,E,n
 
 
