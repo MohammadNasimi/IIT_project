@@ -16,7 +16,9 @@ from PyQt5.QtWidgets import QMessageBox
 from PyQt5 import QtCore, QtGui, QtWidgets
 #####code mechanical properties ##########
 from code_mechanical_properties_for_software import *
-
+####initial  parameters for base #########
+lvdt =[]
+loadcell=[]
 class Ui_IIT(object):
     def setupUi(self, IIT):
         self.iit = IIT  ## its add for QmessageBox for use in code 
@@ -4643,7 +4645,20 @@ class Ui_IIT(object):
                                                f"{name}", "All Files (*);;Exel file(*.xlsx);;Text Files (*.txt);;Python Files (*.py)")
             if check:
                 self.lineEdit_save_here.setText(file)
-            print(ey,sy,k,E,n ,lvdt,loadcell)
+                print(file)
+                import pandas as pd
+                # Create a dictionary of data
+                # mechanical properties data add to exel 
+                # ey,sy,k,E,n
+                try:
+                        data = {"lvdt": lvdt,
+                        "loadcell": loadcell,"ey":ey,"sy":sy,"k":k,"E":E,"n":n}
+                except:
+                        data = {"lvdt": lvdt,
+                        "loadcell": loadcell}
+                # Convert the dictionary to a DataFrame
+                df = pd.DataFrame(data)
+                df.to_excel(file, index=False)
                 
 ########################### part 4,5 #############################################
     def up_button_pressed(self):
@@ -4731,9 +4746,9 @@ class Ui_IIT(object):
                 # print(Radius,Insert_strain,number_cycle,indentations_interval,first_indentation_depth,Tol1,Tol2)
                 # print(lvdt,loadcell)
                 global ey,sy,k,E,n
-                ey,sy,k,E,n = estimate_mechanical_properties(lvdt,loadcell,Radius,Insert_strain,number_cycle,indentations_interval,first_indentation_depth,Tol1,Tol2)
-                print(ey,sy,k,E,n)
-        
+                ey,sy,k,E,n =estimate_mechanical_properties(lvdt,loadcell,Radius,Insert_strain,number_cycle
+                                                ,indentations_interval,first_indentation_depth,
+                                                Tol1,Tol2)
           
 #######################################################################    
     def retranslateUi(self, IIT):
