@@ -4643,6 +4643,8 @@ class Ui_IIT(object):
                                                f"{name}", "All Files (*);;Exel file(*.xlsx);;Text Files (*.txt);;Python Files (*.py)")
             if check:
                 self.lineEdit_save_here.setText(file)
+            print(ey,sy,k,E,n ,lvdt,loadcell)
+                
 ########################### part 4,5 #############################################
     def up_button_pressed(self):
         self.UP_limited.setStyleSheet("background-color: green")
@@ -4703,33 +4705,34 @@ class Ui_IIT(object):
             print(sample_per_second)
 ###################### part 6 ########################          
     def mechanical_properties_button_clicked(self):
-        Radius = self.lineEdit_Radius.text()
-        Insert_strain = self.lineEdit_Insert_strain.text()
-        number_cycle = self.lineEdit_number_cycle.text()
-        first_indentation_depth = self.lineEdit_first_indentation_depth.text()
-        indentations_interval = self.lineEdit_indentations_interval.text()
-        Tol1 = self.lineEdit_Tol1.text()
-        Tol2 = self.lineEdit_Tol2.text()
-        if Radius == "" or Insert_strain=='' or number_cycle == ''or first_indentation_depth == '' or\
-                indentations_interval == '' or Tol1 =='' or Tol2 =='':
-                QMessageBox.about(self.iit, "mechanical properties", "please fill all parameters")
+        if self.Test_start_testflow.isEnabled() == True:
+                Radius = self.lineEdit_Radius.text()
+                Insert_strain = self.lineEdit_Insert_strain.text()
+                number_cycle = self.lineEdit_number_cycle.text()
+                first_indentation_depth = self.lineEdit_first_indentation_depth.text()
+                indentations_interval = self.lineEdit_indentations_interval.text()
+                Tol1 = self.lineEdit_Tol1.text()
+                Tol2 = self.lineEdit_Tol2.text()
+                if Radius == "" or Insert_strain=='' or number_cycle == ''or first_indentation_depth == '' or\
+                        indentations_interval == '' or Tol1 =='' or Tol2 =='':
+                        QMessageBox.about(self.iit, "mechanical properties", "please fill all parameters")
 
-        try:         
-                Radius = float(Radius)
-                Insert_strain = float(Insert_strain)
-                number_cycle = int(number_cycle)
-                first_indentation_depth = float(first_indentation_depth)
-                indentations_interval =float(indentations_interval)
-                Tol1 = float(Tol1)
-                Tol2 = float(Tol2)
-        except:
-                QMessageBox.about(self.iit, "mechanical properties", "fill with float")
+                try:         
+                        Radius = float(Radius)
+                        Insert_strain = float(Insert_strain)
+                        number_cycle = int(number_cycle)
+                        first_indentation_depth = float(first_indentation_depth)
+                        indentations_interval =float(indentations_interval)
+                        Tol1 = float(Tol1)
+                        Tol2 = float(Tol2)
+                except:
+                        QMessageBox.about(self.iit, "mechanical properties", "fill with float")
 
-        print(Radius,Insert_strain,number_cycle,indentations_interval,first_indentation_depth,Tol1,Tol2)
-        # print(lvdt,loadcell)
-        global ey,sy,k,E,n
-        ey,sy,k,E,n = estimate_mechanical_properties(lvdt,loadcell,Radius,Insert_strain,number_cycle,indentations_interval,first_indentation_depth,Tol1,Tol2)
-
+                # print(Radius,Insert_strain,number_cycle,indentations_interval,first_indentation_depth,Tol1,Tol2)
+                # print(lvdt,loadcell)
+                global ey,sy,k,E,n
+                ey,sy,k,E,n = estimate_mechanical_properties(lvdt,loadcell,Radius,Insert_strain,number_cycle,indentations_interval,first_indentation_depth,Tol1,Tol2)
+                print(ey,sy,k,E,n)
         
           
 #######################################################################    
