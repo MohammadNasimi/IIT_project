@@ -16,6 +16,10 @@ from PyQt5.QtWidgets import QMessageBox
 from PyQt5 import QtCore, QtGui, QtWidgets
 #####code mechanical properties ##########
 from code_mechanical_properties_for_software import *
+
+##### use in save here functions for save in excel ########
+import pandas as pd
+
 ####initial  parameters for base #########
 lvdt =[]
 loadcell=[]
@@ -4645,8 +4649,6 @@ class Ui_IIT(object):
                                                f"{name}", "All Files (*);;Exel file(*.xlsx);;Text Files (*.txt);;Python Files (*.py)")
             if check:
                 self.lineEdit_save_here.setText(file)
-                print(file)
-                import pandas as pd
                 # Create a dictionary of data
                 # mechanical properties data add to exel 
                 # ey,sy,k,E,n
