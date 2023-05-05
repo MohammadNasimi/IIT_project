@@ -4603,6 +4603,14 @@ class Ui_IIT(object):
                 if ser.isOpen():
                         self.Engage_testflow.setStyleSheet("background-color: rgb(3,201,69)")
                         self.Engage_testflow.setEnabled(True)
+                        if self.Test_start_testflow.isEnabled() == True:
+                        #### in active
+                                self.Test_start_testflow.setStyleSheet("background-color: rgb(204,204,204)")
+                                self.Test_start_testflow.setEnabled(False)
+                                self.End_start_testflow.setStyleSheet("background-color: rgb(204,204,204)")
+                                self.End_start_testflow.setEnabled(False)                
+                                self.Move_up_testflow.setStyleSheet("background-color: rgb(204,204,204)")
+                                self.Move_up_testflow.setEnabled(False)
                 else:
                         QMessageBox.about(self.iit, "connect", "port is wrong")
             except:
@@ -4647,31 +4655,40 @@ class Ui_IIT(object):
                 print(f"2,{list_data[3]} ,{list_data[4]} ,{list_data[5]},{list_data[6]},{list_data[7]},{list_data[8]}")
                 # get lvdt loadcell data real time in python and add point to plot force_displacement
                 # Set up plot
-                plt.ion() # Turn on interactive mode
-                fig, ax = plt.subplots()
-                loadcell = []
-                lvdt = []
-                line, = ax.plot(loadcell, lvdt)
-                while True:
-                        try:
-                                if ser.in_waiting > 0:
-                                        data = ser.readline().decode('ascii').rstrip()
-                                        data=data.split(';')
-                                        loadcell.append(int(data[1]))
-                                        lvdt.append(int(data[2]))
-                                        line.set_xdata(loadcell)
-                                        line.set_ydata(lvdt)
-                                        ax.relim()
-                                        ax.autoscale_view()
-                                        fig.canvas.draw()
-                                        fig.canvas.flush_events()
-                                        if int(data[2]) -0.5 < 0:
-                                                break
-                        except KeyboardInterrupt:
-                                ser.close()
-                                break
-                        except:
-                                pass
+                # plt.ion() # Turn on interactive mode
+                # fig, ax = plt.subplots()
+                # loadcell = []
+                # lvdt = []
+                # line, = ax.plot(loadcell, lvdt)
+                # while True:
+                #         try:
+                #                 if ser.in_waiting > 0:
+                #                         data = ser.readline().decode('ascii').rstrip()
+                #                         data=data.split(';')
+                #                         loadcell.append(int(data[1]))
+                #                         lvdt.append(int(data[2]))
+                #                         line.set_xdata(loadcell)
+                #                         line.set_ydata(lvdt)
+                #                         ax.relim()
+                #                         ax.autoscale_view()
+                #                         fig.canvas.draw()
+                #                         fig.canvas.flush_events()
+                #                         if int(data[2]) -0.5 < 0:
+                #                                 break
+                #         except KeyboardInterrupt:
+                #                 ser.close()
+                #                 break
+                #         except:
+                #                 pass
+                #after test do this code 
+                self.End_start_testflow.setStyleSheet("background-color: rgb(3,201,69)")
+                self.End_start_testflow.setEnabled(True)
+                #### move up motor 
+                
+                self.Move_up_testflow.setStyleSheet("background-color: rgb(3,201,69)")
+                self.Move_up_testflow.setEnabled(True)
+                time.sleep(2)
+
                 
                 # lvdt,loadcell=list_data_lvdt_loadcell()
 ################################# part3 ########################
