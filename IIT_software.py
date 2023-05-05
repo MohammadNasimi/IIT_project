@@ -4599,8 +4599,17 @@ class Ui_IIT(object):
         return result
 ################################ part2  #################
     def Engage_button_clicked(self):
-        self.Engage_testflow.setStyleSheet("background-color: rgb(3,201,69)")
-        self.Engage_testflow.setEnabled(True)
+            try:
+                if ser.isOpen():
+                        self.Engage_testflow.setStyleSheet("background-color: rgb(3,201,69)")
+                        self.Engage_testflow.setEnabled(True)
+                else:
+                        QMessageBox.about(self.iit, "connect", "port is wrong")
+            except:
+                QMessageBox.about(self.iit, "connect to device  button", "please choice port connect")
+
+                
+        
     def UP_button_clicked(self):
         self.Indentor_move_testflow.setStyleSheet("background-color: rgb(3,201,69)")
         self.Indentor_move_testflow.setEnabled(True)
@@ -4663,6 +4672,7 @@ class Ui_IIT(object):
                                 break
                         except:
                                 pass
+                
                 # lvdt,loadcell=list_data_lvdt_loadcell()
 ################################# part3 ########################
     def save_here_clicked(self):
