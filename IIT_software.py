@@ -4653,33 +4653,36 @@ class Ui_IIT(object):
                 # send data to arduino after click in start button 
                 # first is kind move and we need it in arduino 2 sign start check in arduino
                 print(f"2,{list_data[3]} ,{list_data[4]} ,{list_data[5]},{list_data[6]},{list_data[7]},{list_data[8]}")
+                # Send string data to Arduino
+                data = f"2,{list_data[3]} ,{list_data[4]} ,{list_data[5]},{list_data[6]},{list_data[7]},{list_data[8]}"
+                ser.write(data.encode())
                 # get lvdt loadcell data real time in python and add point to plot force_displacement
                 # Set up plot
-                # plt.ion() # Turn on interactive mode
-                # fig, ax = plt.subplots()
-                # loadcell = []
-                # lvdt = []
-                # line, = ax.plot(loadcell, lvdt)
-                # while True:
-                #         try:
-                #                 if ser.in_waiting > 0:
-                #                         data = ser.readline().decode('ascii').rstrip()
-                #                         data=data.split(';')
-                #                         loadcell.append(int(data[1]))
-                #                         lvdt.append(int(data[2]))
-                #                         line.set_xdata(loadcell)
-                #                         line.set_ydata(lvdt)
-                #                         ax.relim()
-                #                         ax.autoscale_view()
-                #                         fig.canvas.draw()
-                #                         fig.canvas.flush_events()
-                #                         if int(data[2]) -0.5 < 0:
-                #                                 break
-                #         except KeyboardInterrupt:
-                #                 ser.close()
-                #                 break
-                #         except:
-                #                 pass
+                plt.ion() # Turn on interactive mode
+                fig, ax = plt.subplots()
+                loadcell = []
+                lvdt = []
+                line, = ax.plot(loadcell, lvdt)
+                while True:
+                        try:
+                                if ser.in_waiting > 0:
+                                        data = ser.readline().decode('ascii').rstrip()
+                                        data=data.split(';')
+                                        loadcell.append(int(data[1]))
+                                        lvdt.append(int(data[2]))
+                                        line.set_xdata(loadcell)
+                                        line.set_ydata(lvdt)
+                                        ax.relim()
+                                        ax.autoscale_view()
+                                        fig.canvas.draw()
+                                        fig.canvas.flush_events()
+                                        if int(data[2]) -0.5 < 0:
+                                                break
+                        except KeyboardInterrupt:
+                                ser.close()
+                                break
+                        except:
+                                pass
                 #after test do this code 
                 self.End_start_testflow.setStyleSheet("background-color: rgb(3,201,69)")
                 self.End_start_testflow.setEnabled(True)
