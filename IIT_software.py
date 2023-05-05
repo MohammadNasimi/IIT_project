@@ -4565,7 +4565,8 @@ class Ui_IIT(object):
 ######################   part 1   ######################
     def Connect_to_device_clicked(self):
         com_connect_arduino = str(self.list_com_connect.currentText())
-        #ser = serial.Serial(port=com_connect_arduino, baudrate=115200, timeout=.1)
+        global ser
+        ser = serial.Serial(port=com_connect_arduino, baudrate=115200, timeout=.1)
         time.sleep(2)
         self.conditions_connections.setText('connected')
         print(com_connect_arduino)
@@ -4611,11 +4612,6 @@ class Ui_IIT(object):
                 self.Test_start_testflow.setStyleSheet("background-color: rgb(3,201,69)")
                 self.Test_start_testflow.setEnabled(True)
                 # get data another main window 
-                #####test_conditions
-                # test_conditions = QtWidgets.QMainWindow()
-                # ui = tc.Ui_test_conditions()
-                # ui.setupUi(test_conditions)
-                # print(ui.lineEdit_cycle_number.text())
                 with open('data.txt') as f:
                         contents = f.read()
                         list_data = contents.split(",")
@@ -4640,8 +4636,34 @@ class Ui_IIT(object):
                 # send data to arduino after click in start button 
                 # first is kind move and we need it in arduino 2 sign start check in arduino
                 print(f"2,{list_data[3]} ,{list_data[4]} ,{list_data[5]},{list_data[6]},{list_data[7]},{list_data[8]}")
-                global lvdt,loadcell
-                lvdt,loadcell=list_data_lvdt_loadcell()
+                # get lvdt loadcell data real time in python and add point to plot force_displacement
+                # Set up plot
+                plt.ion() # Turn on interactive mode
+                fig, ax = plt.subplots()
+                loadcell = []
+                lvdt = []
+                line, = ax.plot(loadcell, lvdt)
+                while True:
+                        try:
+                                if ser.in_waiting > 0:
+                                        data = ser.readline().decode('ascii').rstrip()
+                                        data=data.split(';')
+                                        loadcell.append(int(data[1]))
+                                        lvdt.append(int(data[2]))
+                                        line.set_xdata(loadcell)
+                                        line.set_ydata(lvdt)
+                                        ax.relim()
+                                        ax.autoscale_view()
+                                        fig.canvas.draw()
+                                        fig.canvas.flush_events()
+                                        if int(data[2]) -0.5 < 0:
+                                                break
+                        except KeyboardInterrupt:
+                                ser.close()
+                                break
+                        except:
+                                pass
+                # lvdt,loadcell=list_data_lvdt_loadcell()
 ################################# part3 ########################
     def save_here_clicked(self):
             name =self.lineEdit_testname.text()
