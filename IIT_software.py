@@ -12,6 +12,7 @@ import serial,time,sys,glob
 from PyQt5.QtWidgets import QFileDialog
 import test_conditions as tc
 from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtCore import QTimer
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 #####code mechanical properties ##########
@@ -4562,20 +4563,30 @@ class Ui_IIT(object):
 
 ###################################################     
 ################### functions methods #################
+#### func update data load cell lvdt real time 
+    def update_data_loadcell_lvdt(self):
+        try:
+                if ser.isOpen():
+                    ##### get load cell and lvdt  data  of arduino and show in software
+                    if ser.in_waiting > 0:
+                        data = ser.readline().decode('ascii').rstrip()
+                        data = data.split(';')
+                        self.label_load.setText(data[0])
+                        self.label_Depth.setText(data[1])
+        except:
+                pass
 ######################   part 1   ######################
     def Connect_to_device_clicked(self):
-        com_connect_arduino = str(self.list_com_connect.currentText())
         global ser
-        ser = serial.Serial(port=com_connect_arduino, baudrate=115200, timeout=.1)
-        time.sleep(2)
-        self.conditions_connections.setText('connected')
-        print(com_connect_arduino)
-        ##### get load cell and lvdt  data  of arduino and show in software
-        from random import randint
-        a = randint(0,100)     
-        self.label_load.setText(f"{a}")
-        self.label_Depth.setText(f"{a}")
-                
+        try:
+                ser.isOpen()
+        except:
+                com_connect_arduino = str(self.list_com_connect.currentText())
+                ser = serial.Serial(port=com_connect_arduino, baudrate=115200, timeout=.1)
+                time.sleep(2)
+                self.conditions_connections.setText('connected')
+                print(com_connect_arduino)
+        
 
 
         
@@ -4668,8 +4679,8 @@ class Ui_IIT(object):
                                 if ser.in_waiting > 0:
                                         data = ser.readline().decode('ascii').rstrip()
                                         data=data.split(';')
-                                        loadcell.append(int(data[1]))
-                                        lvdt.append(int(data[2]))
+                                        loadcell.append(int(data[0]))
+                                        lvdt.append(int(data[1]))
                                         line.set_xdata(loadcell)
                                         line.set_ydata(lvdt)
                                         ax.relim()
@@ -4913,5 +4924,8 @@ if __name__ == "__main__":
     dialog = QtWidgets.QDialog()
     test_cond.setupUi(dialog)
     ui.test_conditions.clicked.connect(lambda :dialog.exec_())    
-    ###########################
+    ############### timer for get real time lvdt and load cell of arduino############
+    timer = QTimer()
+    timer.timeout.connect(ui.update_data_loadcell_lvdt)
+    timer.start(5) # Update every 5 milliseconds
     sys.exit(app.exec_())
