@@ -20,6 +20,9 @@ from code_mechanical_properties_for_software import *
 
 ##### use in save here functions for save in excel ########
 import pandas as pd
+#### file pass 
+import os
+basedir = os.path.dirname(__file__)
 
 ####initial  parameters for base #########
 lvdt =[]
@@ -674,7 +677,7 @@ class Ui_IIT(object):
 "    border-style: inset;\n"
 "}")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("F:/تحصیلات/ارشد/IIT/coding_software/code_all_software/engage.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(f"{basedir}/engage.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.Engage_button.setIcon(icon)
         self.Engage_button.setIconSize(QtCore.QSize(35, 35))
         self.Engage_button.setObjectName("Engage_button")
@@ -1719,7 +1722,7 @@ class Ui_IIT(object):
 "    border-style: inset;\n"
 "}")
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("F:/تحصیلات/ارشد/IIT/coding_software/code_all_software/Start.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(f"{basedir}/Start.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.Start_button.setIcon(icon1)
         self.Start_button.setIconSize(QtCore.QSize(25, 25))
         self.Start_button.setFlat(True)
@@ -2559,7 +2562,7 @@ class Ui_IIT(object):
         self.pic_IIT.setStyleSheet("border:none;padding:5px")
         self.pic_IIT.setFrameShape(QtWidgets.QFrame.Box)
         self.pic_IIT.setText("")
-        self.pic_IIT.setPixmap(QtGui.QPixmap("F:/تحصیلات/ارشد/IIT/coding_software/code_all_software/IIT_pic.png"))
+        self.pic_IIT.setPixmap(QtGui.QPixmap(f"{basedir}/IIT_pic.png"))
         self.pic_IIT.setScaledContents(True)
         self.pic_IIT.setWordWrap(False)
         self.pic_IIT.setObjectName("pic_IIT")
@@ -3122,7 +3125,7 @@ class Ui_IIT(object):
 "    border-style: inset;\n"
 "}")
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("F:/تحصیلات/ارشد/IIT/coding_software/code_all_software/down.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap(f"{basedir}/down.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.Down.setIcon(icon2)
         self.Down.setIconSize(QtCore.QSize(40, 40))
         self.Down.setAutoExclusive(True)
@@ -3284,7 +3287,7 @@ class Ui_IIT(object):
 "}")
         self.STOP.setText("")
         icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap("F:/تحصیلات/ارشد/IIT/coding_software/code_all_software/stop.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon3.addPixmap(QtGui.QPixmap(f"{basedir}/stop.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.STOP.setIcon(icon3)
         self.STOP.setIconSize(QtCore.QSize(80, 80))
         self.STOP.setFlat(True)
@@ -3460,7 +3463,7 @@ class Ui_IIT(object):
 "    border-style: inset;\n"
 "}")
         icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap("F:/تحصیلات/ارشد/IIT/coding_software/code_all_software/up.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon4.addPixmap(QtGui.QPixmap(f"{basedir}/up.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.UP.setIcon(icon4)
         self.UP.setIconSize(QtCore.QSize(40, 40))
         self.UP.setAutoExclusive(True)
