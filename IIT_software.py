@@ -23,6 +23,7 @@ import pandas as pd
 #### file pass 
 import os
 basedir = os.path.dirname(__file__)
+import struct
 
 ####initial  parameters for base #########
 lvdt =[]
@@ -4669,7 +4670,6 @@ class Ui_IIT(object):
                 # print(f"2,{list_data[3]} ,{list_data[4]} ,{list_data[5]},{list_data[6]},{list_data[7]},{list_data[8]}")
                 
                 # create an array of byte to send arduino
-                import struct
                 start_bytes = bytearray()
                 # convert an integer to bytes and add to the array
                 first_hex = 0xAA
@@ -4761,6 +4761,28 @@ class Ui_IIT(object):
                 df.to_excel(file, index=False)
                 
 ########################### part 4,5 #############################################
+    def binary(self,direction,speed,press_release):
+        # create an array of byte to send arduino packet type BB
+        up_down_bytes = bytearray()
+        # convert an integer to bytes and add to the array
+        first_hex = 0xBB
+        first_hex_bytes = struct.pack('B', first_hex)
+        up_down_bytes.extend(first_hex_bytes)
+
+        direction = struct.pack('i', direction)
+        up_down_bytes.extend(direction)
+        
+        speed = struct.pack('i',  int(speed))
+        up_down_bytes.extend(speed)
+        
+        press_release_ = struct.pack('i',press_release)
+        up_down_bytes.extend(press_release_)
+        
+        last_hex = 0x44
+        last_hex_bytes = struct.pack('B', last_hex)
+        up_down_bytes.extend(last_hex_bytes)
+        return up_down_bytes
+
     def up_button_pressed(self):
         self.UP_limited.setStyleSheet("background-color: green")
         self.UP_limited.setEnabled(True)  
@@ -4772,13 +4794,19 @@ class Ui_IIT(object):
                 speed = "10"
         # send to arduino
         # kind 1,0 ,direct 1,0, speed
-        print(f"1,1,{speed}")
+        # print(f"1,1,{speed}")
+        data = self.binary(1,speed,1)
+        # Send bytes data to Arduino
+        ser.write(data)
         
     def up_button_released(self):
         self.UP_limited.setStyleSheet("")
         self.UP_limited.setEnabled(False) 
         # send to arduino
-        print(f"stop")
+        # print(f"stop")
+        data = self.binary(1,10,0)
+        # Send bytes data to Arduino
+        ser.write(data)
         
     def Down_button_pressed(self):
         self.Down_limited.setStyleSheet("background-color: red")
@@ -4791,13 +4819,19 @@ class Ui_IIT(object):
                 speed = "10"
         # send to arduino
         # kind 1,0 ,direct 1,0, speed
-        print(f"1,0,{speed}")
+        # print(f"1,0,{speed}")
+        data = self.binary(0,speed,1)
+        # Send bytes data to Arduino
+        ser.write(data)
           
     def Down_button_released(self):
         self.Down_limited.setStyleSheet("")
         self.Down_limited.setEnabled(False) 
         # send to arduino
-        print(f"stop")     
+        # print(f"stop")     
+        data = self.binary(0,10,0)
+        # Send bytes data to Arduino
+        ser.write(data)
           
     def btnstate(self,choice):
       if choice.text() == "Manual":
@@ -4810,8 +4844,11 @@ class Ui_IIT(object):
          if choice.isChecked() == True:
             self.Specific_move_speed.setEnabled(True)
             self.Manual_move_speed.setEnabled(False)
-    def stop_button_clicked(serlf):
-            print("stop")
+    def stop_button_clicked(self):
+        #     print("stop")
+        data = self.binary(0,0,0)
+        # Send bytes data to Arduino
+        ser.write(data)
     def Zero_button_clicked(self):
             self.label_load.setText("0")
     def Initilize_button_clicked(self):
