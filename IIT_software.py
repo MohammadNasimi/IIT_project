@@ -4666,37 +4666,69 @@ class Ui_IIT(object):
                 
                 # send data to arduino after click in start button 
                 # first is kind move and we need it in arduino 2 sign start check in arduino
-                print(f"2,{list_data[3]} ,{list_data[4]} ,{list_data[5]},{list_data[6]},{list_data[7]},{list_data[8]}")
-                # Send string data to Arduino
-                data = f"2,{list_data[3]} ,{list_data[4]} ,{list_data[5]},{list_data[6]},{list_data[7]},{list_data[8]}"
-                ser.write(data.encode())
+                # print(f"2,{list_data[3]} ,{list_data[4]} ,{list_data[5]},{list_data[6]},{list_data[7]},{list_data[8]}")
+                
+                # create an array of byte to send arduino
+                import struct
+                start_bytes = bytearray()
+                # convert an integer to bytes and add to the array
+                first_hex = 0xAA
+                first_hex_bytes = struct.pack('B', first_hex)
+                start_bytes.extend(first_hex_bytes)
+
+                label_Indentor_Raduis_float_bytes = struct.pack('f', float(list_data[3]))
+                start_bytes.extend(label_Indentor_Raduis_float_bytes)
+                
+                label_cycle_number_int_bytes = struct.pack('i',  int(list_data[4]))
+                start_bytes.extend(label_cycle_number_int_bytes)
+                
+                label_Maximum_Depth_int_bytes = struct.pack('i',  int(list_data[5]))
+                start_bytes.extend(label_Maximum_Depth_int_bytes)
+                
+                label_Unloading_ratio_int_bytes = struct.pack('i',  int(list_data[6]))
+                start_bytes.extend(label_Unloading_ratio_int_bytes)
+                
+                label_Loading_rate_float_bytes = struct.pack('f',  float(list_data[7]))
+                start_bytes.extend(label_Loading_rate_float_bytes)
+                
+                label_Holding_time_int_bytes = struct.pack('i',  int(list_data[8]))
+                start_bytes.extend(label_Holding_time_int_bytes)
+                last_hex = 0x33
+                last_hex_bytes = struct.pack('B', last_hex)
+                start_bytes.extend(last_hex_bytes)
+                # Send bytes data to Arduino
+                ser.write(start_bytes)
+                
+                
                 # get lvdt loadcell data real time in python and add point to plot force_displacement
                 # Set up plot
-                plt.ion() # Turn on interactive mode
-                fig, ax = plt.subplots()
-                loadcell = []
-                lvdt = []
-                line, = ax.plot(loadcell, lvdt)
-                while True:
-                        try:
-                                if ser.in_waiting > 0:
-                                        data = ser.readline().decode('ascii').rstrip()
-                                        data=data.split(';')
-                                        loadcell.append(int(data[0]))
-                                        lvdt.append(int(data[1]))
-                                        line.set_xdata(loadcell)
-                                        line.set_ydata(lvdt)
-                                        ax.relim()
-                                        ax.autoscale_view()
-                                        fig.canvas.draw()
-                                        fig.canvas.flush_events()
-                                        if int(data[2]) -0.5 < 0:
-                                                break
-                        except KeyboardInterrupt:
-                                ser.close()
-                                break
-                        except:
-                                pass
+                # plt.ion() # Turn on interactive mode
+                # fig, ax = plt.subplots()
+                # loadcell = []
+                # lvdt = []
+                # line, = ax.plot(loadcell, lvdt)
+                # while True:
+                #         try:
+                #                 if ser.in_waiting > 0:
+                #                         data = ser.readline().decode('ascii').rstrip()
+                #                         data=data.split(';')
+                #                         loadcell.append(int(data[0]))
+                #                         lvdt.append(int(data[1]))
+                #                         line.set_xdata(loadcell)
+                #                         line.set_ydata(lvdt)
+                #                         ax.relim()
+                #                         ax.autoscale_view()
+                #                         fig.canvas.draw()
+                #                         fig.canvas.flush_events()
+                #                         if int(data[2]) -0.5 < 0:
+                #                                 break
+                #         except KeyboardInterrupt:
+                #                 ser.close()
+                #                 break
+                #         except:
+                #                 pass
+                
+                
                 #after test do this code 
                 self.End_start_testflow.setStyleSheet("background-color: rgb(3,201,69)")
                 self.End_start_testflow.setEnabled(True)
