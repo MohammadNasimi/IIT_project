@@ -4589,7 +4589,7 @@ class Ui_IIT(object):
                 ser = serial.Serial(port=com_connect_arduino, baudrate=115200, timeout=.1)
                 time.sleep(2)
                 self.conditions_connections.setText('connected')
-                print(com_connect_arduino)
+                # print(com_connect_arduino)
         
 
 
@@ -4665,9 +4665,6 @@ class Ui_IIT(object):
 
                 self.label_Holding_time.setText(list_data[8])
                 
-                # send data to arduino after click in start button 
-                # first is kind move and we need it in arduino 2 sign start check in arduino
-                # print(f"2,{list_data[3]} ,{list_data[4]} ,{list_data[5]},{list_data[6]},{list_data[7]},{list_data[8]}")
                 
                 # create an array of byte to send arduino
                 start_bytes = bytearray()
@@ -4676,8 +4673,8 @@ class Ui_IIT(object):
                 first_hex_bytes = struct.pack('B', first_hex)
                 start_bytes.extend(first_hex_bytes)
 
-                label_Indentor_Raduis_float_bytes = struct.pack('f', float(list_data[3]))
-                start_bytes.extend(label_Indentor_Raduis_float_bytes)
+                start_float_bytes = struct.pack('f', float(1))
+                start_bytes.extend(start_float_bytes)
                 
                 label_cycle_number_int_bytes = struct.pack('i',  int(list_data[4]))
                 start_bytes.extend(label_cycle_number_int_bytes)
