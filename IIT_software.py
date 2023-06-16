@@ -17,7 +17,8 @@ from PyQt5.QtCore import QTimer
 from PyQt5 import QtCore, QtGui, QtWidgets
 #####code mechanical properties ##########
 from code_mechanical_properties_for_software import *
-
+#### code residual stress #########
+from code_Residual_stress_for_software import estimate_residual_stress
 ##### use in save here functions for save in excel ########
 import pandas as pd
 #### file pass 
@@ -28,6 +29,8 @@ import struct
 ####initial  parameters for base #########
 lvdt =[]
 loadcell=[]
+lvdt1 = []
+loadcell1=[]
 class Ui_IIT(object):
     def setupUi(self, IIT):
         self.iit = IIT  ## its add for QmessageBox for use in code 
@@ -4577,6 +4580,7 @@ class Ui_IIT(object):
         self.Initilize.clicked.connect(self.Initilize_button_clicked)
 #################### part 6 ############################
         self.mechanical_properties_2.clicked.connect(self.mechanical_properties_button_clicked)
+        self.Residual_stress_2.clicked.connect(self.residual_stress_button_clicked)
 
         
 
@@ -4899,7 +4903,22 @@ class Ui_IIT(object):
                 ey,sy,k,E,n =estimate_mechanical_properties(lvdt,loadcell,Radius,Insert_strain,number_cycle
                                                 ,indentations_interval,first_indentation_depth,
                                                 Tol1,Tol2)
-          
+    def residual_stress_button_clicked(self):
+        if self.Test_start_testflow.isEnabled() == False:
+                kapa = self.lineEdit_kapa.text()
+                if kapa == "" :
+                        QMessageBox.about(self.iit, "residual_stress", "please fill all parameters")
+
+                try:      
+                        kapa = float(kapa)
+                except:
+                        QMessageBox.about(self.iit, "residual_stress", "fill with float")
+                        
+                if lvdt1 == [] or loadcell2 == []:
+                        QMessageBox.about(self.iit, "residual_stress", "you need test again  No RS")
+                else:
+                        global RS_Lee_1,RS_Lee_2
+                        RS_Lee_1,RS_Lee_2 =estimate_residual_stress(lvdt,loadcell,lvdt1,loadcell1,kapa)  
 #######################################################################    
     def retranslateUi(self, IIT):
         _translate = QtCore.QCoreApplication.translate
