@@ -1,12 +1,12 @@
 import pandas as pd
 import numpy as np
-def Residual_Stress(file):
-    df = pd.read_excel(file)
-    x = df.iloc[:, 0].tolist()
-    y = df.iloc[:, 1].tolist()
-    for i in range(0, len(x)):
-        x[i] = -x[i]
-        y[i] = -4*y[i]
+def Residual_Stress(x,y):
+    # df = pd.read_excel(file)
+    # x = df.iloc[:, 0].tolist()
+    # y = df.iloc[:, 1].tolist()
+    # for i in range(0, len(x)):
+    #     x[i] = -x[i]
+    #     y[i] = -4*y[i]
     Max = max(x)
     x0 = x.index(Max) 
     p_max = y[x0]
@@ -30,10 +30,12 @@ def Residual_Stress(file):
     A_c=24.56*(h_c**2)
     
     return p_max,A_c
-
-with_rs = Residual_Stress('n0.4\\3D-Q-n04-Case1.xlsx')
-no_rs =Residual_Stress('n0.4\\3D-Q-n04-noRS.xlsx')
-kapa=float(input('insert the stress ratio='))
-RS_Lee_2= (no_rs[0]-with_rs[0])*3/((1+kapa)*with_rs[1])
-RS_Lee_1= kapa*RS_Lee_2
-print(RS_Lee_2,RS_Lee_1)
+def estimate_residual_stress(lvdt,loadcell,lvdt1,loadcell1,kapa):  
+    # with_rs = Residual_Stress('n0.4\\3D-Q-n04-Case1.xlsx')
+    # no_rs =Residual_Stress('n0.4\\3D-Q-n04-noRS.xlsx')
+    # kapa=float(input('insert the stress ratio='))
+    with_rs = Residual_Stress(lvdt,loadcell)
+    no_rs =Residual_Stress(lvdt1,loadcell1)
+    RS_Lee_2= (no_rs[0]-with_rs[0])*3/((1+kapa)*with_rs[1])
+    RS_Lee_1= kapa*RS_Lee_2
+    return RS_Lee_1,RS_Lee_2
