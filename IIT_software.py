@@ -4044,6 +4044,22 @@ class Ui_IIT(object):
         self.mechanical_properties_2.setObjectName("mechanical_properties_2")
         self.tabWidget.addTab(self.mechanical_properties, "")
         self.Residual_stress = QtWidgets.QWidget()
+        self.kapa = QtWidgets.QLabel(self.Residual_stress)
+        self.kapa.setGeometry(QtCore.QRect(20, 120, 111, 16))
+        self.kapa.setObjectName("kapa")
+        self.lineEdit_kapa = QtWidgets.QLineEdit(self.Residual_stress)
+        self.lineEdit_kapa.setGeometry(QtCore.QRect(20, 140, 121, 20))
+        self.lineEdit_kapa.setToolTipDuration(2)
+        self.lineEdit_kapa.setLayoutDirection(QtCore.Qt.LeftToRight)
+        self.lineEdit_kapa.setAutoFillBackground(False)
+        self.lineEdit_kapa.setStyleSheet("    background: transparent;\n"
+"    background-color: transparent;\n"
+"    color: black;\n"
+"    border: 1px solid #5A5A5A;\n"
+"    border-radius: 5px;\n"
+"")
+        self.lineEdit_kapa.setClearButtonEnabled(False)
+        self.lineEdit_kapa.setObjectName("lineEdit_kapa")
         self.Residual_stress.setObjectName("Residual_stress")
         self.Residual_stress_2 = QtWidgets.QPushButton(self.Residual_stress)
         self.Residual_stress_2.setGeometry(QtCore.QRect(10, 340, 141, 41))
@@ -4957,6 +4973,7 @@ class Ui_IIT(object):
         self.Tol2.setText(_translate("IIT", "Tol2"))
         self.Tol1.setText(_translate("IIT", "Tol1"))
         self.first_indentation_depth.setText(_translate("IIT", "first indentation depth"))
+        self.kapa.setText(_translate("IIT", "kapa"))
         self.mechanical_properties_2.setText(_translate("IIT", "mechanical properties"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.mechanical_properties), _translate("IIT", "mechanical properties"))
         self.Residual_stress_2.setText(_translate("IIT", "Residual stress"))
