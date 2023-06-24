@@ -4810,6 +4810,8 @@ class Ui_IIT(object):
                                 speed = self.Manual_move_speed.currentText()
                         elif self.Specific.isChecked() == True:
                                 speed = self.Specific_move_speed.text()
+                                if int(speed)>30:
+                                        speed = "10"
                         if speed == "":
                                 speed = "10"
                         # send to arduino
@@ -4843,6 +4845,8 @@ class Ui_IIT(object):
                                 speed = self.Manual_move_speed.currentText()
                         elif self.Specific.isChecked() == True:
                                 speed = self.Specific_move_speed.text()
+                                if int(speed)>30:
+                                        speed = "10"
                         if speed == "":
                                 speed = "10"
                         # send to arduino
