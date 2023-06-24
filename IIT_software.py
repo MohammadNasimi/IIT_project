@@ -4892,11 +4892,65 @@ class Ui_IIT(object):
         except:
                 QMessageBox.about(self.iit, "connect to device  button", "please choice port connect")
     def Zero_button_clicked(self):
-            self.label_load.setText("0")
+        try:
+                if ser.isOpen():
+                        load_zero =self.label_load.text()
+                        lvdt_zero=self.label_Depth.text()
+                        load_zero = float(load_zero)
+                        lvdt_zero = float(lvdt_zero)
+                        # create an array of byte to send arduino packet type BB
+                        calibre = bytearray()
+                        # convert an integer to bytes and add to the array
+                        first_hex = 0xCC
+                        first_hex_bytes = struct.pack('B', first_hex)
+                        calibre.extend(first_hex_bytes)
+
+                        load_zero = struct.pack('f', load_zero)
+                        calibre.extend(load_zero)
+                        
+                        lvdt_zero = struct.pack('f',  lvdt_zero)
+                        calibre.extend(lvdt_zero)
+                        last_hex = 0xFF
+                        last_hex_bytes = struct.pack('B', last_hex)
+                        calibre.extend(last_hex_bytes)
+                        # Send bytes data to Arduino
+                        ser.write(calibre)
+        except:
+                pass
     def Initilize_button_clicked(self):
-            sample_per_second = self.SPS_list.currentText()
-            #send to arduino
-            print(sample_per_second)
+        SPS = self.SPS_list.currentText()
+        #send to arduino
+        if SPS == "Normal(12.5)":
+                sample_per_second = 50
+        elif SPS == "Slowest(1.875)":
+                sample_per_second = 2
+        elif SPS == "Slow(2.5)":
+                sample_per_second = 3
+        elif SPS == "Fast (15)":
+                sample_per_second = 4
+        elif SPS == "Fastest (37.5)":
+                sample_per_second = 5
+        try:
+                if ser.isOpen():
+                        # create an array of byte to send arduino packet type BB
+                        spf = bytearray()
+                        # convert an integer to bytes and add to the array
+                        first_hex = 0xFF
+                        first_hex_bytes = struct.pack('B', first_hex)
+                        spf.extend(first_hex_bytes)
+
+                        sample_per_second = struct.pack('i', sample_per_second)
+                        spf.extend(sample_per_second)
+                        
+                        last_hex = 0xDD
+                        last_hex_bytes = struct.pack('B', last_hex)
+                        spf.extend(last_hex_bytes)
+                        # Send bytes data to Arduino
+                        ser.write(spf)
+        except:
+                pass
+
+                
 ###################### part 6 ########################          
     def mechanical_properties_button_clicked(self):
         if self.Test_start_testflow.isEnabled() == True:
@@ -4939,7 +4993,7 @@ class Ui_IIT(object):
                 except:
                         QMessageBox.about(self.iit, "residual_stress", "fill with float")
                         
-                if lvdt1 == [] or loadcell2 == []:
+                if lvdt1 == [] or loadcell1 == []:
                         QMessageBox.about(self.iit, "residual_stress", "you need test again  No RS")
                 else:
                         global RS_Lee_1,RS_Lee_2
