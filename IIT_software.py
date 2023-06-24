@@ -4719,31 +4719,32 @@ class Ui_IIT(object):
                 
                 # get lvdt loadcell data real time in python and add point to plot force_displacement
                 # Set up plot
-                # plt.ion() # Turn on interactive mode
-                # fig, ax = plt.subplots()
-                # loadcell = []
-                # lvdt = []
-                # line, = ax.plot(loadcell, lvdt)
-                # while True:
-                #         try:
-                #                 if ser.in_waiting > 0:
-                #                         data = ser.readline().decode('ascii').rstrip()
-                #                         data=data.split(';')
-                #                         loadcell.append(int(data[0]))
-                #                         lvdt.append(int(data[1]))
-                #                         line.set_xdata(loadcell)
-                #                         line.set_ydata(lvdt)
-                #                         ax.relim()
-                #                         ax.autoscale_view()
-                #                         fig.canvas.draw()
-                #                         fig.canvas.flush_events()
-                #                         if int(data[2]) -0.5 < 0:
-                #                                 break
-                #         except KeyboardInterrupt:
-                #                 ser.close()
-                #                 break
-                #         except:
-                #                 pass
+                plt.ion() # Turn on interactive mode
+                fig, ax = plt.subplots()
+                loadcell = []
+                lvdt = []
+                line, = ax.plot(loadcell, lvdt)
+                while True:
+                        try:
+                                if ser.in_waiting > 0:
+                                        data = ser.readline().decode('ascii').rstrip()
+                                        data=data.split(';')
+                                        loadcell.append(float(data[0]))
+                                        lvdt.append(float(data[1]))
+                                        line.set_xdata(float(data[0])*10)
+                                        #line.set_ydata(float(data[1])*1000)
+                                        line.set_ydata(time.time())
+                                        ax.relim()
+                                        ax.autoscale_view()
+                                        fig.canvas.draw()
+                                        fig.canvas.flush_events()
+                                        if float(data[2]) -0.5 < 0:
+                                                break
+                        except KeyboardInterrupt:
+                                ser.close()
+                                break
+                        except:
+                                pass
                 
                 
                 #after test do this code 
