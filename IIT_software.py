@@ -4802,54 +4802,71 @@ class Ui_IIT(object):
         return up_down_bytes
 
     def up_button_pressed(self):
-        self.UP_limited.setStyleSheet("background-color: green")
-        self.UP_limited.setEnabled(True)  
-        if self.Manual.isChecked() == True:
-            speed = self.Manual_move_speed.currentText()
-        elif self.Specific.isChecked() == True:
-            speed = self.Specific_move_speed.text()
-            if speed == "":
-                speed = "10"
-        # send to arduino
-        # kind 1,0 ,direct 1,0, speed
-        # print(f"1,1,{speed}")
-        data = self.binary(1,speed,1)
-        # Send bytes data to Arduino
-        ser.write(data)
-        
+        try:
+                if ser.isOpen():
+                        self.UP_limited.setStyleSheet("background-color: green")
+                        self.UP_limited.setEnabled(True)  
+                        if self.Manual.isChecked() == True:
+                                speed = self.Manual_move_speed.currentText()
+                        elif self.Specific.isChecked() == True:
+                                speed = self.Specific_move_speed.text()
+                        if speed == "":
+                                speed = "10"
+                        # send to arduino
+                        # kind 1,0 ,direct 1,0, speed
+                        # print(f"1,1,{speed}")
+                        data = self.binary(1,speed,1)
+                        # Send bytes data to Arduino
+                        ser.write(data)
+                else:
+                        QMessageBox.about(self.iit, "connect", "port is wrong")
+        except:
+                QMessageBox.about(self.iit, "connect to device  button", "please choice port connect")
     def up_button_released(self):
         self.UP_limited.setStyleSheet("")
         self.UP_limited.setEnabled(False) 
         # send to arduino
         # print(f"stop")
         data = self.binary(1,10,0)
-        # Send bytes data to Arduino
-        ser.write(data)
-        
+        try:
+           if ser.isOpen():
+                # Send bytes data to Arduino
+                ser.write(data)
+        except:
+                pass
     def Down_button_pressed(self):
-        self.Down_limited.setStyleSheet("background-color: red")
-        self.Down_limited.setEnabled(True)  
-        if self.Manual.isChecked() == True:
-            speed = self.Manual_move_speed.currentText()
-        elif self.Specific.isChecked() == True:
-            speed = self.Specific_move_speed.text()
-            if speed == "":
-                speed = "10"
-        # send to arduino
-        # kind 1,0 ,direct 1,0, speed
-        # print(f"1,0,{speed}")
-        data = self.binary(0,speed,1)
-        # Send bytes data to Arduino
-        ser.write(data)
-          
+        try:
+                if ser.isOpen():
+                        self.Down_limited.setStyleSheet("background-color: red")
+                        self.Down_limited.setEnabled(True)  
+                        if self.Manual.isChecked() == True:
+                                speed = self.Manual_move_speed.currentText()
+                        elif self.Specific.isChecked() == True:
+                                speed = self.Specific_move_speed.text()
+                        if speed == "":
+                                speed = "10"
+                        # send to arduino
+                        # kind 1,0 ,direct 1,0, speed
+                        # print(f"1,0,{speed}")
+                        data = self.binary(0,speed,1)
+                        # Send bytes data to Arduino
+                        ser.write(data)
+                else:
+                        QMessageBox.about(self.iit, "connect", "port is wrong")
+        except:
+                QMessageBox.about(self.iit, "connect to device  button", "please choice port connect")
     def Down_button_released(self):
         self.Down_limited.setStyleSheet("")
         self.Down_limited.setEnabled(False) 
         # send to arduino
         # print(f"stop")     
         data = self.binary(0,10,0)
-        # Send bytes data to Arduino
-        ser.write(data)
+        try:
+           if ser.isOpen():
+                # Send bytes data to Arduino
+                ser.write(data)
+        except:
+                pass
           
     def btnstate(self,choice):
       if choice.text() == "Manual":
@@ -4863,10 +4880,17 @@ class Ui_IIT(object):
             self.Specific_move_speed.setEnabled(True)
             self.Manual_move_speed.setEnabled(False)
     def stop_button_clicked(self):
-        #     print("stop")
-        data = self.binary(0,0,0)
-        # Send bytes data to Arduino
-        ser.write(data)
+        try:
+                if ser.isOpen():
+                        #     print("stop")
+                        data = self.binary(0,0,0)
+                        # Send bytes data to Arduino
+                        ser.write(data)
+
+                else:
+                        QMessageBox.about(self.iit, "connect", "port is wrong")
+        except:
+                QMessageBox.about(self.iit, "connect to device  button", "please choice port connect")
     def Zero_button_clicked(self):
             self.label_load.setText("0")
     def Initilize_button_clicked(self):
