@@ -4733,11 +4733,14 @@ class Ui_IIT(object):
                                 if ser.in_waiting > 0:
                                         data = ser.readline().decode('ascii').rstrip()
                                         data=data.split(';')
-                                        loadcell.append(float(data[0]))
-                                        lvdt.append(float(data[1]))
-                                        line.set_xdata(float(data[0])*10)
-                                        #line.set_ydata(float(data[1])*1000)
-                                        line.set_ydata(time.time())
+                                        if self.No_RS_Test.isChecked()==True:
+                                                loadcell1.append(float(data[0]))
+                                                lvdt1.append(float(data[1])) 
+                                        else:  
+                                                loadcell.append(float(data[0]))
+                                                lvdt.append(float(data[1]))
+                                        line.set_xdata(float(data[0]))
+                                        line.set_ydata(float(data[1]))
                                         ax.relim()
                                         ax.autoscale_view()
                                         fig.canvas.draw()
@@ -4991,7 +4994,7 @@ class Ui_IIT(object):
                                                 ,indentations_interval,first_indentation_depth,
                                                 Tol1,Tol2)
     def residual_stress_button_clicked(self):
-        if self.Test_start_testflow.isEnabled() == False:
+        if self.Test_start_testflow.isEnabled() == True :
                 kapa = self.lineEdit_.text()
                 if kapa == "" :
                         QMessageBox.about(self.iit, "residual_stress", "please fill all parameters")
