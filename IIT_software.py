@@ -4085,6 +4085,10 @@ class Ui_IIT(object):
         self.Residual_stress_2.setDefault(True)
         self.Residual_stress_2.setFlat(False)
         self.Residual_stress_2.setObjectName("Residual_stress_2")
+        self.No_RS_Test = QtWidgets.QCheckBox(self.Residual_stress)
+        self.No_RS_Test.setGeometry(QtCore.QRect(50, 190, 71, 16))
+        self.No_RS_Test.setIconSize(QtCore.QSize(15, 15))
+        self.No_RS_Test.setObjectName("No_RS_Test")
         self.tabWidget.addTab(self.Residual_stress, "")
         self.frame_left = QtWidgets.QFrame(self.centralwidget)
         self.frame_left.setGeometry(QtCore.QRect(0, -1, 31, 561))
@@ -4988,7 +4992,7 @@ class Ui_IIT(object):
                                                 Tol1,Tol2)
     def residual_stress_button_clicked(self):
         if self.Test_start_testflow.isEnabled() == False:
-                kapa = self.lineEdit_kapa.text()
+                kapa = self.lineEdit_.text()
                 if kapa == "" :
                         QMessageBox.about(self.iit, "residual_stress", "please fill all parameters")
 
@@ -5076,6 +5080,7 @@ class Ui_IIT(object):
         self.Tol1.setText(_translate("IIT", "Tol1"))
         self.first_indentation_depth.setText(_translate("IIT", "first indentation depth"))
         self.kapa.setText(_translate("IIT", "kapa"))
+        self.No_RS_Test.setText(_translate("IIT", " No RS Test"))
         self.mechanical_properties_2.setText(_translate("IIT", "mechanical properties"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.mechanical_properties), _translate("IIT", "mechanical properties"))
         self.Residual_stress_2.setText(_translate("IIT", "Residual stress"))
