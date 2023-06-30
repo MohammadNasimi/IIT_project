@@ -5102,6 +5102,7 @@ class Ui_IIT(object):
         self.lineEdit_indentations_interval.setText(_translate("IIT", "0.01"))
         self.lineEdit_Tol1.setText(_translate("IIT", "0.01"))
         self.lineEdit_Tol2.setText(_translate("IIT", "0.01"))
+        self.lineEdit_kapa.setText(_translate("IIT", "0.25"))
 
 
 
