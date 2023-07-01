@@ -4601,6 +4601,7 @@ class Ui_IIT(object):
                         data = data.split(';')
                         self.label_load.setText(data[0])
                         self.label_Depth.setText(data[1])
+                        print(data[0],data[1])
         except:
                 pass
 ######################   part 1   ######################
@@ -4614,9 +4615,7 @@ class Ui_IIT(object):
                 time.sleep(2)
                 self.conditions_connections.setText('connected')
                 # print(com_connect_arduino)
-        
-
-
+                      
         
     def serial_ports(self):
         if sys.platform.startswith('win'):
@@ -4721,37 +4720,37 @@ class Ui_IIT(object):
                 ser.write(start_bytes)
                 
                 
-                # get lvdt loadcell data real time in python and add point to plot force_displacement
-                # Set up plot
-                plt.ion() # Turn on interactive mode
-                fig, ax = plt.subplots()
-                loadcell = []
-                lvdt = []
-                line, = ax.plot(loadcell, lvdt)
-                while True:
-                        try:
-                                if ser.in_waiting > 0:
-                                        data = ser.readline().decode('ascii').rstrip()
-                                        data=data.split(';')
-                                        if self.No_RS_Test.isChecked()==True:
-                                                loadcell1.append(float(data[0]))
-                                                lvdt1.append(float(data[1])) 
-                                        else:  
-                                                loadcell.append(float(data[0]))
-                                                lvdt.append(float(data[1]))
-                                        line.set_xdata(float(data[0]))
-                                        line.set_ydata(float(data[1]))
-                                        ax.relim()
-                                        ax.autoscale_view()
-                                        fig.canvas.draw()
-                                        fig.canvas.flush_events()
-                                        if float(data[2]) -0.5 < 0:
-                                                break
-                        except KeyboardInterrupt:
-                                ser.close()
-                                break
-                        except:
-                                pass
+                # # get lvdt loadcell data real time in python and add point to plot force_displacement
+                # # Set up plot
+                # plt.ion() # Turn on interactive mode
+                # fig, ax = plt.subplots()
+                # loadcell = []
+                # lvdt = []
+                # line, = ax.plot(loadcell, lvdt)
+                # while True:
+                #         try:
+                #                 if ser.in_waiting > 0:
+                #                         data = ser.readline().decode('ascii').rstrip()
+                #                         data=data.split(';')
+                #                         if self.No_RS_Test.isChecked()==True:
+                #                                 loadcell1.append(float(data[0]))
+                #                                 lvdt1.append(float(data[1])) 
+                #                         else:  
+                #                                 loadcell.append(float(data[0]))
+                #                                 lvdt.append(float(data[1]))
+                #                         line.set_xdata(float(data[0]))
+                #                         line.set_ydata(float(data[1]))
+                #                         ax.relim()
+                #                         ax.autoscale_view()
+                #                         fig.canvas.draw()
+                #                         fig.canvas.flush_events()
+                #                         if float(data[2]) -0.5 < 0:
+                #                                 break
+                #         except KeyboardInterrupt:
+                #                 ser.close()
+                #                 break
+                #         except:
+                #                 pass
                 
                 
                 #after test do this code 
@@ -4761,7 +4760,7 @@ class Ui_IIT(object):
                 
                 self.Move_up_testflow.setStyleSheet("background-color: rgb(3,201,69)")
                 self.Move_up_testflow.setEnabled(True)
-                time.sleep(2)
+                # time.sleep(2)
 
                 
                 # lvdt,loadcell=list_data_lvdt_loadcell()
