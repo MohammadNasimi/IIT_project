@@ -4608,7 +4608,10 @@ class Ui_IIT(object):
     def Connect_to_device_clicked(self):
         global ser
         try:
-                ser.isOpen()
+                if ser.serial_port.isOpen():
+                        ser.serial_port.close()
+                        self.conditions_connections.setText('disconnected')
+
         except:
                 com_connect_arduino = str(self.list_com_connect.currentText())
                 ser = serial.Serial(port=com_connect_arduino, baudrate=115200, timeout=.1)
