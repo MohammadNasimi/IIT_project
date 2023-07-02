@@ -31,6 +31,8 @@ lvdt =[]
 loadcell=[]
 lvdt1 = []
 loadcell1=[]
+
+
 class Ui_IIT(object):
     def setupUi(self, IIT):
         self.iit = IIT  ## its add for QmessageBox for use in code 
@@ -4617,7 +4619,6 @@ class Ui_IIT(object):
                 ser = serial.Serial(port=com_connect_arduino, baudrate=115200, timeout=.1)
                 time.sleep(2)
                 self.conditions_connections.setText('connected')
-                # print(com_connect_arduino)
                       
         
     def serial_ports(self):
@@ -4721,39 +4722,43 @@ class Ui_IIT(object):
                 start_bytes.extend(last_hex_bytes)
                 # Send bytes data to Arduino
                 ser.write(start_bytes)
-                
-                
-                # # get lvdt loadcell data real time in python and add point to plot force_displacement
-                # # Set up plot
-                # plt.ion() # Turn on interactive mode
-                # fig, ax = plt.subplots()
-                # loadcell = []
-                # lvdt = []
-                # line, = ax.plot(loadcell, lvdt)
-                # while True:
-                #         try:
-                #                 if ser.in_waiting > 0:
-                #                         data = ser.readline().decode('ascii').rstrip()
-                #                         data=data.split(';')
-                #                         if self.No_RS_Test.isChecked()==True:
-                #                                 loadcell1.append(float(data[0]))
-                #                                 lvdt1.append(float(data[1])) 
-                #                         else:  
-                #                                 loadcell.append(float(data[0]))
-                #                                 lvdt.append(float(data[1]))
-                #                         line.set_xdata(float(data[0]))
-                #                         line.set_ydata(float(data[1]))
-                #                         ax.relim()
-                #                         ax.autoscale_view()
-                #                         fig.canvas.draw()
-                #                         fig.canvas.flush_events()
-                #                         if float(data[2]) -0.5 < 0:
-                #                                 break
-                #         except KeyboardInterrupt:
-                #                 ser.close()
-                #                 break
-                #         except:
-                #                 pass
+
+                # get lvdt loadcell data real time in python and add point to plot force_displacement
+                # Set up plot
+                plt.ion() # Turn on interactive mode
+                fig, ax = plt.subplots()
+                loadcell = []
+                lvdt = []
+                line, = ax.plot(loadcell, lvdt)
+                count = 0
+                while True:
+                        try:
+                                if ser.in_waiting > 0:
+                                        data = ser.readline().decode('ascii').rstrip()
+                                        data=data.split(';')
+                                        if self.No_RS_Test.isChecked()==True:
+                                                loadcell1.append(float(data[0]))
+                                                lvdt1.append(float(data[1])) 
+                                        else:  
+                                                loadcell.append(float(data[0]))
+                                                lvdt.append(float(data[1]))
+                                        line.set_xdata(float(data[0]))
+                                        line.set_ydata(float(data[1]))
+                                        ax.relim()
+                                        ax.set_xlim(-0.01, 0.01)  
+                                        ax.set_ylim(-10, 500)  
+                                        fig.canvas.draw()
+                                        fig.canvas.flush_events()
+                                        count +=1
+                                        if float(data[2])  < 0.2 and count>5 :
+                                                break
+
+                        except KeyboardInterrupt:
+                                ser.close()
+                                break
+                        except:
+                                pass
+
                 
                 
                 #after test do this code 
@@ -4763,9 +4768,7 @@ class Ui_IIT(object):
                 
                 self.Move_up_testflow.setStyleSheet("background-color: rgb(3,201,69)")
                 self.Move_up_testflow.setEnabled(True)
-                # time.sleep(2)
-
-                
+                time.sleep(1)               
                 # lvdt,loadcell=list_data_lvdt_loadcell()
 ################################# part3 ########################
     def save_here_clicked(self):
@@ -4908,9 +4911,7 @@ class Ui_IIT(object):
         try:
                 if ser.isOpen():
                         load_zero =self.label_load.text()
-                        lvdt_zero=self.label_Depth.text()
                         load_zero = float(load_zero)
-                        lvdt_zero = float(lvdt_zero)
                         # create an array of byte to send arduino packet type BB
                         calibre = bytearray()
                         # convert an integer to bytes and add to the array
@@ -4921,8 +4922,6 @@ class Ui_IIT(object):
                         load_zero = struct.pack('f', load_zero)
                         calibre.extend(load_zero)
                         
-                        lvdt_zero = struct.pack('f',  lvdt_zero)
-                        calibre.extend(lvdt_zero)
                         last_hex = 0xFF
                         last_hex_bytes = struct.pack('B', last_hex)
                         calibre.extend(last_hex_bytes)
@@ -5010,7 +5009,7 @@ class Ui_IIT(object):
                         QMessageBox.about(self.iit, "residual_stress", "you need test again  No RS")
                 else:
                         global RS_Lee_1,RS_Lee_2
-                        RS_Lee_1,RS_Lee_2 =estimate_residual_stress(lvdt,loadcell,lvdt1,loadcell1,kapa)  
+                        RS_Lee_1,RS_Lee_2 =estimate_residual_stress(lvdt,loadcell,lvdt1,loadcell1,kapa)
 #######################################################################    
     def retranslateUi(self, IIT):
         _translate = QtCore.QCoreApplication.translate
