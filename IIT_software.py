@@ -4645,7 +4645,7 @@ class Ui_IIT(object):
                 if ser.isOpen():
                         self.Engage_testflow.setStyleSheet("background-color: rgb(3,201,69)")
                         self.Engage_testflow.setEnabled(True)
-                        if self.Test_start_testflow.isEnabled() == True:
+                        if self.End_start_testflow.isEnabled() == True:
                         #### in active
                                 self.Test_start_testflow.setStyleSheet("background-color: rgb(204,204,204)")
                                 self.Test_start_testflow.setEnabled(False)
