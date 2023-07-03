@@ -4604,6 +4604,39 @@ class Ui_IIT(object):
                         self.label_load.setText(data[0])
                         self.label_Depth.setText(data[1])
                         print(data[0],data[1])
+                        # get lvdt loadcell data real time in python and add point to plot force_displacement
+                        # Set up plot
+
+                        max_depth = float(self.label_Maximum_Depth.text())
+                        if self.Test_start_testflow.isEnabled() == True:
+                                if plt.isinteractive() ==False:
+                                        plt.ion() # Turn on interactive mode
+                                        fig, ax = plt.subplots()
+                                        line, = ax.plot(loadcell, lvdt)
+                                if self.No_RS_Test.isChecked()==True:
+                                        loadcell1.append(float(data[0]))
+                                        lvdt1.append(float(data[1])) 
+                                else:  
+                                        loadcell.append(float(data[0]))
+                                        lvdt.append(float(data[1]))
+                                line.set_xdata(float(data[0]))
+                                line.set_ydata(float(data[1]))
+                                ax.relim()
+                                ax.set_xlim(-0.01, 0.01)  
+                                ax.set_ylim(-10, 500)  
+                                fig.canvas.draw()
+                                fig.canvas.flush_events()
+                        if max_depth - float(data[1])  < 0.01:
+                                #after test do this code 
+                                self.End_start_testflow.setStyleSheet("background-color: rgb(3,201,69)")
+                                self.End_start_testflow.setEnabled(True)
+                                #### move up motor 
+                                self.Move_up_testflow.setStyleSheet("background-color: rgb(3,201,69)")
+                                self.Move_up_testflow.setEnabled(True)
+                        if (0.03 - float(data[1]) <0.01) and self.Move_up_testflow.isEnabled() == True:
+                                self.Test_start_testflow.setStyleSheet("background-color: rgb(204,204,204)")
+                                self.Test_start_testflow.setEnabled(False)
+                        # lvdt,loadcell=list_data_lvdt_loadcell()
         except:
                 pass
 ######################   part 1   ######################
@@ -4722,54 +4755,9 @@ class Ui_IIT(object):
                 start_bytes.extend(last_hex_bytes)
                 # Send bytes data to Arduino
                 ser.write(start_bytes)
+                self.Test_start_testflow.setStyleSheet("background-color: rgb(204,204,204)")
+                self.Engage_testflow.setEnabled(False)
 
-                # get lvdt loadcell data real time in python and add point to plot force_displacement
-                # Set up plot
-                plt.ion() # Turn on interactive mode
-                fig, ax = plt.subplots()
-                loadcell = []
-                lvdt = []
-                line, = ax.plot(loadcell, lvdt)
-                count = 0
-                while True:
-                        try:
-                                if ser.in_waiting > 0:
-                                        data = ser.readline().decode('ascii').rstrip()
-                                        data=data.split(';')
-                                        if self.No_RS_Test.isChecked()==True:
-                                                loadcell1.append(float(data[0]))
-                                                lvdt1.append(float(data[1])) 
-                                        else:  
-                                                loadcell.append(float(data[0]))
-                                                lvdt.append(float(data[1]))
-                                        line.set_xdata(float(data[0]))
-                                        line.set_ydata(float(data[1]))
-                                        ax.relim()
-                                        ax.set_xlim(-0.01, 0.01)  
-                                        ax.set_ylim(-10, 500)  
-                                        fig.canvas.draw()
-                                        fig.canvas.flush_events()
-                                        count +=1
-                                        if float(data[2])  < 0.2 and count>5 :
-                                                break
-
-                        except KeyboardInterrupt:
-                                ser.close()
-                                break
-                        except:
-                                pass
-
-                
-                
-                #after test do this code 
-                self.End_start_testflow.setStyleSheet("background-color: rgb(3,201,69)")
-                self.End_start_testflow.setEnabled(True)
-                #### move up motor 
-                
-                self.Move_up_testflow.setStyleSheet("background-color: rgb(3,201,69)")
-                self.Move_up_testflow.setEnabled(True)
-                time.sleep(1)               
-                # lvdt,loadcell=list_data_lvdt_loadcell()
 ################################# part3 ########################
     def save_here_clicked(self):
             name =self.lineEdit_testname.text()
@@ -4824,8 +4812,7 @@ class Ui_IIT(object):
                                 speed = self.Specific_move_speed.text()
                                 if int(speed)>30:
                                         speed = "10"
-                        if speed == "":
-                                speed = "10"
+                                        
                         # send to arduino
                         # kind 1,0 ,direct 1,0, speed
                         # print(f"1,1,{speed}")
