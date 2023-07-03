@@ -4609,6 +4609,16 @@ class Ui_IIT(object):
 
                         max_depth = float(self.label_Maximum_Depth.text())
                         if self.Test_start_testflow.isEnabled() == True:
+                                if max_depth - float(data[1])  < 0.01:
+                                        #after test do this code 
+                                        self.End_start_testflow.setStyleSheet("background-color: rgb(3,201,69)")
+                                        self.End_start_testflow.setEnabled(True)
+                                        #### move up motor 
+                                        self.Move_up_testflow.setStyleSheet("background-color: rgb(3,201,69)")
+                                        self.Move_up_testflow.setEnabled(True)
+                                if (float(data[1]) -0.03 <0.01) and self.Move_up_testflow.isEnabled() == True:
+                                        self.Test_start_testflow.setStyleSheet("background-color: rgb(204,204,204)")
+                                        self.Test_start_testflow.setEnabled(False)
                                 if plt.isinteractive() ==False:
                                         plt.ion() # Turn on interactive mode
                                         fig, ax = plt.subplots()
@@ -4622,21 +4632,11 @@ class Ui_IIT(object):
                                 line.set_xdata(float(data[0]))
                                 line.set_ydata(float(data[1]))
                                 ax.relim()
-                                ax.set_xlim(-0.01, 0.01)  
-                                ax.set_ylim(-10, 500)  
+                                ax.set_xlim(-0.01, 0.02)  
+                                ax.set_ylim(-20, 30)  
                                 fig.canvas.draw()
                                 fig.canvas.flush_events()
-                        if max_depth - float(data[1])  < 0.01:
-                                #after test do this code 
-                                self.End_start_testflow.setStyleSheet("background-color: rgb(3,201,69)")
-                                self.End_start_testflow.setEnabled(True)
-                                #### move up motor 
-                                self.Move_up_testflow.setStyleSheet("background-color: rgb(3,201,69)")
-                                self.Move_up_testflow.setEnabled(True)
-                        if (0.03 - float(data[1]) <0.01) and self.Move_up_testflow.isEnabled() == True:
-                                self.Test_start_testflow.setStyleSheet("background-color: rgb(204,204,204)")
-                                self.Test_start_testflow.setEnabled(False)
-                        # lvdt,loadcell=list_data_lvdt_loadcell()
+                # lvdt,loadcell=list_data_lvdt_loadcell()
         except:
                 pass
 ######################   part 1   ######################
@@ -4677,6 +4677,10 @@ class Ui_IIT(object):
             try:
                 if ser.isOpen():
                         self.Engage_testflow.setStyleSheet("background-color: rgb(3,201,69)")
+                        # start engage
+                        data = self.binary(0,20,1)
+                        # Send bytes data to Arduino
+                        ser.write(data)
                         self.Engage_testflow.setEnabled(True)
                         if self.End_start_testflow.isEnabled() == True:
                         #### in active
@@ -4755,7 +4759,7 @@ class Ui_IIT(object):
                 start_bytes.extend(last_hex_bytes)
                 # Send bytes data to Arduino
                 ser.write(start_bytes)
-                self.Test_start_testflow.setStyleSheet("background-color: rgb(204,204,204)")
+                self.Engage_testflow.setStyleSheet("background-color: rgb(204,204,204)")
                 self.Engage_testflow.setEnabled(False)
 
 ################################# part3 ########################
@@ -4805,7 +4809,9 @@ class Ui_IIT(object):
         try:
                 if ser.isOpen():
                         self.UP_limited.setStyleSheet("background-color: green")
-                        self.UP_limited.setEnabled(True)  
+                        self.UP_limited.setEnabled(True)
+                        self.Engage_testflow.setStyleSheet("background-color: rgb(204,204,204)")
+                        self.Engage_testflow.setEnabled(False)  
                         if self.Manual.isChecked() == True:
                                 speed = self.Manual_move_speed.currentText()
                         elif self.Specific.isChecked() == True:
