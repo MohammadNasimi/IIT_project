@@ -18,6 +18,7 @@ class Ui_test_conditions(object):
         test_conditions.resize(840, 485)
         test_conditions.setMinimumSize(QtCore.QSize(840, 485))
         test_conditions.setMaximumSize(QtCore.QSize(840, 500))
+        self.test_conditions = test_conditions
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -1867,7 +1868,7 @@ class Ui_test_conditions(object):
         
         ##################### connect clicked   ######################
         self.Update_data_curve.clicked.connect(self.Update_data_curve_clicked)
-        # self.Save_close.clicked.connect(self.save_close_clicked)
+        self.Save_close.clicked.connect(self.save_close_clicked)
 
 
     def retranslateUi(self, test_conditions):
@@ -1917,7 +1918,8 @@ class Ui_test_conditions(object):
         self.Update_data_curve.setText(_translate("test_conditions", "Update Data/Curve"))
         self.Save_close.setText(_translate("test_conditions", "Save and Close"))
 
-
+    def close_window(self):
+        self.test_conditions.close()
 ################### FUNCTIONS methods ############################
     def Update_data_curve_clicked(self):
         from datetime import date
@@ -2032,6 +2034,7 @@ class Ui_test_conditions(object):
         
         with open("data.txt", "w") as f:
                 f.write(f"{operator},{specimen},{Indentor},{Indentor_raduis},{cycle_number},{maximum_depth},{unloading_ratio},{loading_rate},{holding_time}")
+        self.close_window()
         # send another window data 
 #         cycle_number = self.lineEdit_cycle_number.text()
 #         self.window = QtWidgets.QMainWindow()
