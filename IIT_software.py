@@ -4604,11 +4604,13 @@ class Ui_IIT(object):
                         self.label_load.setText(data[0])
                         self.label_Depth.setText(data[1])
                         print(data[0],data[1])
-                        # get lvdt loadcell data real time in python and add point to plot force_displacement
+
                         # Set up plot
 
                         max_depth = float(self.label_Maximum_Depth.text())
                         if self.Test_start_testflow.isEnabled() == True:
+                                loadcell.append(abs(float(data[0])))
+                                lvdt.append(float(data[1]))
                                 if max_depth - float(data[1])  < 0.01:
                                         #after test do this code 
                                         self.End_start_testflow.setStyleSheet("background-color: rgb(3,201,69)")
@@ -4616,26 +4618,36 @@ class Ui_IIT(object):
                                         #### move up motor 
                                         self.Move_up_testflow.setStyleSheet("background-color: rgb(3,201,69)")
                                         self.Move_up_testflow.setEnabled(True)
-                                if (float(data[1]) -0.03 <0.01) and self.Move_up_testflow.isEnabled() == True:
+                                if (float(data[1]) -0.03 <0.1) and self.Move_up_testflow.isEnabled() == True:
                                         self.Test_start_testflow.setStyleSheet("background-color: rgb(204,204,204)")
                                         self.Test_start_testflow.setEnabled(False)
-                                if plt.isinteractive() ==False:
-                                        plt.ion() # Turn on interactive mode
-                                        fig, ax = plt.subplots()
-                                        line, = ax.plot(loadcell, lvdt)
-                                if self.No_RS_Test.isChecked()==True:
-                                        loadcell1.append(float(data[0]))
-                                        lvdt1.append(float(data[1])) 
-                                else:  
-                                        loadcell.append(float(data[0]))
-                                        lvdt.append(float(data[1]))
-                                line.set_xdata(float(data[0]))
-                                line.set_ydata(float(data[1]))
-                                ax.relim()
-                                ax.set_xlim(-0.01, 0.02)  
-                                ax.set_ylim(-20, 30)  
-                                fig.canvas.draw()
-                                fig.canvas.flush_events()
+                                        print(loadcell,lvdt)
+                                        plt.plot(loadcell, lvdt)
+                                        print('*************************')
+                                        # Add labels and a title
+                                        plt.xlabel('load cell')
+                                        plt.ylabel('lvdt')
+                                        plt.title('p-h')
+
+                                        # Show the plot
+                                        plt.show()
+                                # if plt.isinteractive() ==False:
+                                #         plt.ion() # Turn on interactive mode
+                                #         fig, ax = plt.subplots()
+                                #         line, = ax.plot(loadcell, lvdt)
+                                # if self.No_RS_Test.isChecked()==True:
+                                #         loadcell1.append(float(data[0]))
+                                #         lvdt1.append(float(data[1])) 
+                                # else:  
+                                #         loadcell.append(float(data[0]))
+                                #         lvdt.append(float(data[1]))
+                                # line.set_xdata(float(data[0]))
+                                # line.set_ydata(float(data[1]))
+                                # ax.relim()
+                                # ax.set_xlim(-0.01, 0.02)  
+                                # ax.set_ylim(-20, 30)  
+                                # fig.canvas.draw()
+                                # fig.canvas.flush_events()
                 # lvdt,loadcell=list_data_lvdt_loadcell()
         except:
                 pass
@@ -4675,10 +4687,10 @@ class Ui_IIT(object):
 ################################ part2  #################
     def Engage_button_clicked(self):
             try:
-                if ser.isOpen():
+                if ser.isOpen() and self.Indentor_move_testflow.isEnabled() == True:
                         self.Engage_testflow.setStyleSheet("background-color: rgb(3,201,69)")
                         # start engage
-                        data = self.binary(0,20,1)
+                        data = self.binary(0,30,1)
                         # Send bytes data to Arduino
                         ser.write(data)
                         self.Engage_testflow.setEnabled(True)
@@ -4700,9 +4712,13 @@ class Ui_IIT(object):
     def UP_button_clicked(self):
         self.Indentor_move_testflow.setStyleSheet("background-color: rgb(3,201,69)")
         self.Indentor_move_testflow.setEnabled(True)
+        self.Test_start_testflow.setStyleSheet("background-color: rgb(204,204,204)")
+        self.Test_start_testflow.setEnabled(False)
     def Down_button_clicked(self):
         self.Indentor_move_testflow.setStyleSheet("background-color: rgb(3,201,69)")
         self.Indentor_move_testflow.setEnabled(True)
+        self.Test_start_testflow.setStyleSheet("background-color: rgb(204,204,204)")
+        self.Test_start_testflow.setEnabled(False)
     def start_button_clicked(self):
         if self.Engage_testflow.isEnabled() == True:
                 self.Test_start_testflow.setStyleSheet("background-color: rgb(3,201,69)")
@@ -5118,5 +5134,5 @@ if __name__ == "__main__":
     ############### timer for get real time lvdt and load cell of arduino############
     timer = QTimer()
     timer.timeout.connect(ui.update_data_loadcell_lvdt)
-    timer.start(5) # Update every 5 milliseconds
+    timer.start(1) # Update every 5 milliseconds
     sys.exit(app.exec_())
