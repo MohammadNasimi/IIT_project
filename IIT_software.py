@@ -4691,6 +4691,7 @@ class Ui_IIT(object):
                         self.Engage_testflow.setStyleSheet("background-color: rgb(3,201,69)")
                         # start engage
                         data = self.binary(0,30,1)
+                        
                         # Send bytes data to Arduino
                         ser.write(data)
                         self.Engage_testflow.setEnabled(True)

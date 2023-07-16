@@ -2016,8 +2016,6 @@ class Ui_test_conditions(object):
         ########## plot ############################
         depth.append(0)
         load.append(load_level)
-        print(load)
-        print(depth)
         pen = pg.mkPen(color=(100, 100, 100), width=5)
         self.widget_plot.clear()
         self.widget_plot.plot(load, depth, pen=pen)
