@@ -1851,8 +1851,8 @@ class Ui_test_conditions(object):
         self.widget_plot.setTitle("Loading path", color="b", size="5pt")
         # Add Axis Labels
         styles = {"color": "#000000", "font-size": "20px"}
-        self.widget_plot.setLabel("left", "Depth(um)", **styles)
-        self.widget_plot.setLabel("bottom", "time (s)", **styles)
+        self.widget_plot.setLabel("left", "load cell (kgf)", **styles)
+        self.widget_plot.setLabel("bottom", "Depth(um)", **styles)
         #Add legend
         self.widget_plot.addLegend()
         #Add grid
@@ -1936,16 +1936,19 @@ class Ui_test_conditions(object):
         # print(cycle_number,maximum_depth,unloading_ratio,loading_rate,holding_time)
         self.table_data.setSortingEnabled(False)
         self.table_data.setRowCount(int(cycle_number)*4)
-
+        
 
         #######
         cycle = 1 #  cycle number set for 4 row and increase after 4 row 
         num = 0 # step set num first 1 and after 2 ,3 4 after that again 1 
         depth_level = int(maximum_depth)/int(cycle_number) # depth every cycle in test 1,2 every cycle
+        load_level = 11
         Unloading_Ratio = 0 # unloading rate first type data.
         loading_rate_set = float(loading_rate)
         holding_time_set = 0
-        
+        depth = [0,depth_level]
+        load = [0,load_level,load_level]
+
         for i in range(0,int(cycle_number)*4):
             item_row = QtWidgets.QTableWidgetItem()
             self.table_data.setVerticalHeaderItem(i, item_row)
@@ -1974,11 +1977,17 @@ class Ui_test_conditions(object):
             if i%2 == 0 and i>0 and i%4!=0:
                 depth_level_before = depth_level
                 depth_level = (depth_level*int(unloading_ratio))/100
+                depth.append(depth_level)
+
             if i%4 ==0 and i>0:
                 depth_level = depth_level_before + int(maximum_depth)/int(cycle_number)
+                depth.append(depth_level)
+                load_level = load_level+12
+                load.append(load_level)
+                load.append(load_level)
+
             item = self.table_data.item(i, 3)
             item.setText(f"{depth_level}")
-            
             ######### Unloading Ratio ###########
             if i%2 == 0 and i>0:
                 if Unloading_Ratio == 0:
@@ -2005,10 +2014,13 @@ class Ui_test_conditions(object):
             else:
                 holding_time_set = float(holding_time)
         ########## plot ############################
-            time = [0,11,11,23,23,32,32]
-            depth = [0,50,25,100,50,150,0]
-            pen = pg.mkPen(color=(100, 100, 100), width=5)
-            self.widget_plot.plot(time, depth, pen=pen)
+        depth.append(0)
+        load.append(load_level)
+        print(load)
+        print(depth)
+        pen = pg.mkPen(color=(100, 100, 100), width=5)
+        self.widget_plot.clear()
+        self.widget_plot.plot(load, depth, pen=pen)
     def save_close_clicked(self):
         operator = self.lineEdit_operator.text()
         specimen = self.lineEdit_Specimen.text()
