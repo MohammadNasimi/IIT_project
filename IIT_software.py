@@ -4920,7 +4920,9 @@ class Ui_IIT(object):
         try:
                 if ser.isOpen():
                         load_zero =self.label_load.text()
+                        depth_zero =self.label_Depth.text()
                         load_zero = float(load_zero)
+                        depth_zero = float(depth_zero)
                         # create an array of byte to send arduino packet type BB
                         calibre = bytearray()
                         # convert an integer to bytes and add to the array
@@ -4930,6 +4932,8 @@ class Ui_IIT(object):
 
                         load_zero = struct.pack('f', load_zero)
                         calibre.extend(load_zero)
+                        depth_zero = struct.pack('f', depth_zero)
+                        calibre.extend(depth_zero)
                         
                         last_hex = 0xFF
                         last_hex_bytes = struct.pack('B', last_hex)
