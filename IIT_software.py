@@ -25,6 +25,7 @@ import pandas as pd
 import os
 basedir = os.path.dirname(__file__)
 import struct
+from datetime import datetime
 
 ####initial  parameters for base #########
 lvdt =[]
@@ -4590,7 +4591,6 @@ class Ui_IIT(object):
 
         
 
-
 ###################################################     
 ################### functions methods #################
 #### func update data load cell lvdt real time 
@@ -4603,7 +4603,7 @@ class Ui_IIT(object):
                         data = data.split(';')
                         self.label_load.setText(data[0])
                         self.label_Depth.setText(data[1])
-                        print(data[0],data[1])
+                        print(datetime.now(),data[0],data[1])
 
                         # Set up plot
 
@@ -4655,14 +4655,19 @@ class Ui_IIT(object):
     def Connect_to_device_clicked(self):
         global ser
         try:
-                if ser.serial_port.isOpen():
-                        ser.serial_port.close()
+                if ser.isOpen() ==True:
+                        ser.close()
+                        time.sleep(1)
                         self.conditions_connections.setText('disconnected')
-
+                else:
+                        com_connect_arduino = str(self.list_com_connect.currentText())
+                        ser = serial.Serial(port=com_connect_arduino, baudrate=115200, timeout=.1)
+                        time.sleep(1)
+                        self.conditions_connections.setText('connected')
         except:
                 com_connect_arduino = str(self.list_com_connect.currentText())
                 ser = serial.Serial(port=com_connect_arduino, baudrate=115200, timeout=.1)
-                time.sleep(2)
+                time.sleep(1)
                 self.conditions_connections.setText('connected')
                       
         
@@ -4940,6 +4945,7 @@ class Ui_IIT(object):
                         calibre.extend(last_hex_bytes)
                         # Send bytes data to Arduino
                         ser.write(calibre)
+                        print(calibre)
         except:
                 pass
     def Initilize_button_clicked(self):
