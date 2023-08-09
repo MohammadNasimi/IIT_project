@@ -4591,7 +4591,22 @@ class Ui_IIT(object):
 
         
 
-###################################################     
+################################################### 
+    def plot(self,loadcell,lvdt):
+        loadcell_plot = loadcell
+        lvdt_plot = lvdt
+        loadcell = []
+        lvdt =[]
+        print(loadcell,lvdt)
+        plt.plot(lvdt_plot, loadcell_plot)
+        
+        print('*************************')
+        # Add labels and a title
+        plt.xlabel('LVDT')
+        plt.ylabel('load cell')
+        plt.title('p-h')
+        # Show the plot
+        plt.show()
 ################### functions methods #################
 #### func update data load cell lvdt real time 
     def update_data_loadcell_lvdt(self):
@@ -4609,6 +4624,7 @@ class Ui_IIT(object):
 
                         max_depth = float(self.label_Maximum_Depth.text())
                         if self.Test_start_testflow.isEnabled() == True:
+                                
                                 loadcell.append(abs(float(data[0])))
                                 lvdt.append(float(data[1]))
                                 if max_depth - float(data[1])  < 0.01:
@@ -4621,16 +4637,10 @@ class Ui_IIT(object):
                                 if (float(data[1]) -0.03 <0.1) and self.Move_up_testflow.isEnabled() == True:
                                         self.Test_start_testflow.setStyleSheet("background-color: rgb(204,204,204)")
                                         self.Test_start_testflow.setEnabled(False)
-                                        print(loadcell,lvdt)
-                                        plt.plot(loadcell, lvdt)
-                                        print('*************************')
-                                        # Add labels and a title
-                                        plt.xlabel('load cell')
-                                        plt.ylabel('lvdt')
-                                        plt.title('p-h')
-
-                                        # Show the plot
-                                        plt.show()
+                                        self.plot(loadcell,lvdt)
+                                        
+                                        
+                                        
                                 # if plt.isinteractive() ==False:
                                 #         plt.ion() # Turn on interactive mode
                                 #         fig, ax = plt.subplots()
