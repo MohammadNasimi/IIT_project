@@ -4704,6 +4704,7 @@ class Ui_IIT(object):
 ################################ part2  #################
     def Engage_button_clicked(self):
             # remove before test data lvdt loadcell and lvdt1 and loadcell1
+            global lvdt,loadcell,lvdt1,loadcell1
             lvdt =[]
             loadcell=[]
             lvdt1 = []
