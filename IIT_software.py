@@ -4593,13 +4593,8 @@ class Ui_IIT(object):
 
 ################################################### 
     def plot(self,loadcell,lvdt):
-        loadcell_plot = loadcell
-        lvdt_plot = lvdt
-        loadcell = []
-        lvdt =[]
         print(loadcell,lvdt)
-        plt.plot(lvdt_plot, loadcell_plot)
-        
+        plt.plot(lvdt, loadcell)
         print('*************************')
         # Add labels and a title
         plt.xlabel('LVDT')
@@ -4624,9 +4619,13 @@ class Ui_IIT(object):
 
                         max_depth = float(self.label_Maximum_Depth.text())
                         if self.Test_start_testflow.isEnabled() == True:
-                                
-                                loadcell.append(abs(float(data[0])))
-                                lvdt.append(float(data[1]))
+                                if self.No_RS_Test.isChecked()==True:
+                                        loadcell1.append(abs(float(data[0])))
+                                        lvdt1.append(float(data[1]))
+                                else:  
+                                        loadcell.append(abs(float(data[0])))
+                                        lvdt.append(float(data[1]))
+
                                 if max_depth - float(data[1])  < 0.01:
                                         #after test do this code 
                                         self.End_start_testflow.setStyleSheet("background-color: rgb(3,201,69)")
@@ -4637,7 +4636,10 @@ class Ui_IIT(object):
                                 if (float(data[1]) -0.03 <0.1) and self.Move_up_testflow.isEnabled() == True:
                                         self.Test_start_testflow.setStyleSheet("background-color: rgb(204,204,204)")
                                         self.Test_start_testflow.setEnabled(False)
-                                        self.plot(loadcell,lvdt)
+                                        if self.No_RS_Test.isChecked()==True:
+                                                self.plot(loadcell1,lvdt1)
+                                        else:
+                                                self.plot(loadcell,lvdt)
                                         
                                         
                                         
@@ -4701,6 +4703,11 @@ class Ui_IIT(object):
         return result
 ################################ part2  #################
     def Engage_button_clicked(self):
+            # remove before test data lvdt loadcell and lvdt1 and loadcell1
+            lvdt =[]
+            loadcell=[]
+            lvdt1 = []
+            loadcell1=[]
             try:
                 if ser.isOpen() and self.Indentor_move_testflow.isEnabled() == True:
                         self.Engage_testflow.setStyleSheet("background-color: rgb(3,201,69)")
