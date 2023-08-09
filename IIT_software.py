@@ -4804,15 +4804,43 @@ class Ui_IIT(object):
                 # mechanical properties data add to exel 
                 # ey,sy,k,E,n
                 try:
-                        data = {"lvdt": lvdt,
-                        "loadcell": loadcell,"ey":ey,"sy":sy,"k":k,"E":E,"n":n}
-                except:
-                        data = {"lvdt": lvdt,
-                        "loadcell": loadcell}
-                # Convert the dictionary to a DataFrame
-                df = pd.DataFrame(data)
-                df.to_excel(file, index=False)
+                        ey_ =[ey]
+                        sy_  = [sy]
+                        k_= [k]
+                        E_= [E]
+                        n_= [n]
+                except NameError:
+                        ey_ =[0]
+                        sy_  = [0]
+                        k_= [0]
+                        E_= [0]
+                        n_= [0]
+                # RS data add to exel 
+                # RS_Lee_1,RS_Lee_2
+                try:
+                        RS_Lee_1_ =[RS_Lee_1]
+                        RS_Lee_2_ = [RS_Lee_2]
+                except NameError:
+                        RS_Lee_1_ =[0]
+                        RS_Lee_2_  = [0]
                 
+                data = {"lvdt": lvdt,
+                "loadcell": loadcell}
+                data_NO_RS = {"lvdt": lvdt1,
+                "loadcell": loadcell1}
+                MP = {"ey":ey_,"sy":sy_,"k":k_,"E":E_,"n":n_}
+                RS = {"RS_1":RS_Lee_1_,"RS_2":RS_Lee_2_}
+                # Convert the dictionary to a DataFrame
+                df1 = pd.DataFrame(data)
+                df2 = pd.DataFrame(MP)
+                df3 = pd.DataFrame(data_NO_RS)
+                df4 = pd.DataFrame(RS)
+
+                with pd.ExcelWriter(file) as writer:
+                        df1.to_excel(writer, sheet_name="data", index=False)
+                        df2.to_excel(writer, sheet_name="MP", index=False)
+                        df3.to_excel(writer, sheet_name="No_RS_data", index=False)
+                        df4.to_excel(writer, sheet_name="RS", index=False)
 ########################### part 4,5 #############################################
     def binary(self,direction,speed,press_release):
         # create an array of byte to send arduino packet type BB
