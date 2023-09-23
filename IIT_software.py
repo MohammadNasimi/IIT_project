@@ -5030,7 +5030,6 @@ class Ui_IIT(object):
                 
 ###################### part 6 ########################          
     def mechanical_properties_button_clicked(self):
-        if self.Test_start_testflow.isEnabled() == True:
                 Radius = self.lineEdit_Radius.text()
                 Insert_strain = self.lineEdit_Insert_strain.text()
                 number_cycle = self.lineEdit_number_cycle.text()
@@ -5060,7 +5059,6 @@ class Ui_IIT(object):
                                                 ,indentations_interval,first_indentation_depth,
                                                 Tol1,Tol2)
     def residual_stress_button_clicked(self):
-        if self.Test_start_testflow.isEnabled() == True :
                 kapa = self.lineEdit_.text()
                 if kapa == "" :
                         QMessageBox.about(self.iit, "residual_stress", "please fill all parameters")
