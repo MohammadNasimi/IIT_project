@@ -4633,7 +4633,7 @@ class Ui_IIT(object):
                                         #### move up motor 
                                         self.Move_up_testflow.setStyleSheet("background-color: rgb(3,201,69)")
                                         self.Move_up_testflow.setEnabled(True)
-                                if (float(data[1]) -0.03 <0.1) and self.Move_up_testflow.isEnabled() == True:
+                                if (float(data[0]) -0.03 <0.1) and self.Move_up_testflow.isEnabled() == True:
                                         self.Test_start_testflow.setStyleSheet("background-color: rgb(204,204,204)")
                                         self.Test_start_testflow.setEnabled(False)
                                         if self.No_RS_Test.isChecked()==True:
