@@ -4593,9 +4593,8 @@ class Ui_IIT(object):
 
 ################################################### 
     def plot(self,loadcell,lvdt):
-        print(loadcell,lvdt)
+        # print(loadcell,lvdt)
         plt.plot(lvdt, loadcell)
-        print('*************************')
         # Add labels and a title
         plt.xlabel('LVDT')
         plt.ylabel('load cell')
@@ -4633,7 +4632,7 @@ class Ui_IIT(object):
                                         #### move up motor 
                                         self.Move_up_testflow.setStyleSheet("background-color: rgb(3,201,69)")
                                         self.Move_up_testflow.setEnabled(True)
-                                if (float(data[0]) -0.03 <0.1) and self.Move_up_testflow.isEnabled() == True:
+                                if (float(data[1]) -max_depth/2 <0.1) and self.Move_up_testflow.isEnabled() == True:
                                         self.Test_start_testflow.setStyleSheet("background-color: rgb(204,204,204)")
                                         self.Test_start_testflow.setEnabled(False)
                                         if self.No_RS_Test.isChecked()==True:
@@ -4991,7 +4990,6 @@ class Ui_IIT(object):
                         calibre.extend(last_hex_bytes)
                         # Send bytes data to Arduino
                         ser.write(calibre)
-                        print(calibre)
         except:
                 pass
     def Initilize_button_clicked(self):
