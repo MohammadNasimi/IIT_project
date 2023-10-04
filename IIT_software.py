@@ -16,7 +16,7 @@ from PyQt5.QtCore import QTimer
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 #####code mechanical properties ##########
-from code_mechanical_properties_for_software import *
+from code_mechanical_properties_for_software import estimate_Mechanical_properties
 #### code residual stress #########
 from code_Residual_stress_for_software import estimate_residual_stress
 ##### use in save here functions for save in excel ########
@@ -4613,17 +4613,17 @@ class Ui_IIT(object):
                         self.label_load.setText(data[0])
                         self.label_Depth.setText(data[1])
                         print(datetime.now(),data[0],data[1])
-
                         # Set up plot
-
                         max_depth = float(self.label_Maximum_Depth.text())
+                        unlauding_rate = float(self.label_Unloading_ratio.text())
                         if self.Test_start_testflow.isEnabled() == True:
-                                if self.No_RS_Test.isChecked()==True:
-                                        loadcell1.append(abs(float(data[0])))
-                                        lvdt1.append(float(data[1]))
-                                else:  
-                                        loadcell.append(abs(float(data[0])))
-                                        lvdt.append(float(data[1]))
+                                if abs(float(data[0]))>0.2:
+                                        if self.No_RS_Test.isChecked()==True:
+                                                loadcell1.append(abs(float(data[0])))
+                                                lvdt1.append(float(data[1]))
+                                        else:  
+                                                loadcell.append(abs(float(data[0])))
+                                                lvdt.append(float(data[1]))
 
                                 if max_depth - float(data[1])  < 0.01:
                                         #after test do this code 
@@ -4632,7 +4632,7 @@ class Ui_IIT(object):
                                         #### move up motor 
                                         self.Move_up_testflow.setStyleSheet("background-color: rgb(3,201,69)")
                                         self.Move_up_testflow.setEnabled(True)
-                                if (float(data[1]) -max_depth/2 <0.1) and self.Move_up_testflow.isEnabled() == True:
+                                if (float(data[1]) -max_depth*(unlauding_rate/100) <0.1) and self.Move_up_testflow.isEnabled() == True:
                                         self.Test_start_testflow.setStyleSheet("background-color: rgb(204,204,204)")
                                         self.Test_start_testflow.setEnabled(False)
                                         if self.No_RS_Test.isChecked()==True:
@@ -5028,6 +5028,7 @@ class Ui_IIT(object):
                 
 ###################### part 6 ########################          
     def mechanical_properties_button_clicked(self):
+        if lvdt !=[]:
                 Radius = self.lineEdit_Radius.text()
                 Insert_strain = self.lineEdit_Insert_strain.text()
                 number_cycle = self.lineEdit_number_cycle.text()
@@ -5035,6 +5036,9 @@ class Ui_IIT(object):
                 indentations_interval = self.lineEdit_indentations_interval.text()
                 Tol1 = self.lineEdit_Tol1.text()
                 Tol2 = self.lineEdit_Tol2.text()
+                number_cycle_test = self.label_cycle_number.text()
+                depth_max_test = self.label_Maximum_Depth.text()
+                unloading_ratio_test = self.label_Unloading_ratio.text()
                 if Radius == "" or Insert_strain=='' or number_cycle == ''or first_indentation_depth == '' or\
                         indentations_interval == '' or Tol1 =='' or Tol2 =='':
                         QMessageBox.about(self.iit, "mechanical properties", "please fill all parameters")
@@ -5047,17 +5051,21 @@ class Ui_IIT(object):
                         indentations_interval =float(indentations_interval)
                         Tol1 = float(Tol1)
                         Tol2 = float(Tol2)
+                        number_cycle_test = int(number_cycle_test)
+                        depth_max_test = float(depth_max_test)
+                        unloading_ratio_test =float(unloading_ratio_test)
                 except:
                         QMessageBox.about(self.iit, "mechanical properties", "fill with float")
 
                 # print(Radius,Insert_strain,number_cycle,indentations_interval,first_indentation_depth,Tol1,Tol2)
                 # print(lvdt,loadcell)
                 global ey,sy,k,E,n
-                ey,sy,k,E,n =estimate_mechanical_properties(lvdt,loadcell,Radius,Insert_strain,number_cycle
+                ey,sy,k,E,n =estimate_Mechanical_properties(lvdt,loadcell,Radius,Insert_strain,number_cycle
                                                 ,indentations_interval,first_indentation_depth,
-                                                Tol1,Tol2)
+                                                Tol1,Tol2,number_cycle_test,depth_max_test,unloading_ratio_test)
     def residual_stress_button_clicked(self):
-                kapa = self.lineEdit_.text()
+            if lvdt !=[]:
+                kapa = self.lineEdit_kapa.text()
                 if kapa == "" :
                         QMessageBox.about(self.iit, "residual_stress", "please fill all parameters")
 
