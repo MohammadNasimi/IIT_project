@@ -26,6 +26,7 @@ import os
 basedir = os.path.dirname(__file__)
 import struct
 from datetime import datetime
+import matplotlib.pyplot as plt
 
 ####initial  parameters for base #########
 lvdt =[]
