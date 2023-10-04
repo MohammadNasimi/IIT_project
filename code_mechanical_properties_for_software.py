@@ -19,61 +19,63 @@ d=0.01
 tol1=0.01
 # tol2= float(input('Insert tolerance for yield point ='))
 tol2=0.01    
-si=20 #marbot be nemodar v takhier andaze
 
-def list_data_lvdt_loadcell():
-    df = openpyxl.load_workbook('F:\تحصیلات\ارشد\IIT\code properties material\data\data_all.xlsx')
+def estimate_p_h_max_slope(depth_max, number_cycle,unloading_ratio,depth,load):
+    def objective_linear(x, a, b):
+        return a * x + b
+    use_for_slope = round((unloading_ratio/10)*2/5)
+    P_Max=[]
+    h_max =[]
+    slop_cycle = []
+    Width_origin_cycle = []
+    depth_change=[]
+    depth_end_up = depth_max/number_cycle
+    count =0
+    depth_change=[x/10000 for x in depth]
+    for j in range(1,number_cycle+1):
+        
+        for i in range(count,len(depth)):
+            if depth_end_up<depth[i]:
+                    count = i+1
+                    # print(count,depth[i],load[i])
+                    h_max.append(depth_change[i])
+                    P_Max.append(load[i])
+                    start=count-1
+                    break
+        depth_end_down = depth_end_up*unloading_ratio/100
+        for i in range(count,len(depth)):
+            if depth_end_down+1>depth[i]:
+                    count = i+1
+                    # print(count,depth[i])
+                    end =count-1
+                    break
+        end = start + int((end-start)/use_for_slope)
+        x_linear, y_linear =  depth_change[start+20:end],load[start+20:end]
+        popt, _ = curve_fit(objective_linear, x_linear,y_linear)
+        slope, Width_origin = popt
+        slop_cycle.append(slope)
+        Width_origin_cycle.append(Width_origin)
+        depth_end_up = depth_end_up + depth_max/number_cycle
+        
+    return P_Max,h_max,slop_cycle,Width_origin_cycle
 
-        # Get workbook active sheet object
-        # from the active attribute
-    sheet_obj = df.active
-    Row_1 =[]
-    Row_2 =[]
-    #print(sheet_obj.max_column)
-    for M in range(1,sheet_obj.max_row+1):
-        cell_obj_Row_1 = sheet_obj.cell(row = M, column = 1)
-        cell_obj_Row_2 = sheet_obj.cell(row = M, column = 2)
-        Row_1.append(cell_obj_Row_1.value)
-        Row_2.append(cell_obj_Row_2.value)
-
-    # print('stress=',Row_1)
-    # print('strain=',Row_2)
-    return Row_1, Row_2
-
-def estimate_mechanical_properties(Row_1,Row_2,R,n,m,h,d,to1,tol2,si = 20):
+def estimate_Mechanical_properties(lvdt,loadcell,R,n,m,h,d,tol1,tol2,depth_max, number_cycle,unloading_ratio):    
+    P_Max,h_max,slop_cycle,Width_origin_cycle=estimate_p_h_max_slope(depth_max, number_cycle,unloading_ratio,lvdt,loadcell)
+    def power_fit(x,a,b):
+        return a * x ** b
     while 1:
         E = 0
         t = 0
         stress = []
         strain = []
-        count = 0
-        for j in range(0,m) :
+        for i in range(len(P_Max)):
             t=t+1
-            data_stress = []
-            data_strain =[]
-            for i in range(count,len(Row_2)-1):
 
-                if Row_2[i+1]> Row_2[i]:
-                    count = i+1
-                    break
-                data_stress.append(Row_2[i])
-                data_strain.append(Row_1[i])
-            # print(data_stress)
-
-
-
-            #Row_2 =data_stress
-            #Row_1 = data_strain
-            hm = data_strain[0]
-            Fm = data_stress[0]
-            def power_fit(x,a,b):
-                return a * x ** b
-
-            # Calling the curve_fit function
-            params, covariance = curve_fit(f = power_fit, xdata =data_strain , ydata = data_stress)
-            a = params[0]
-            b = params[1]
-
+            hm = h_max[i]
+            Fm = P_Max[i]
+            a = slop_cycle[i]
+            b = Width_origin_cycle[i]
+            b= abs(1)
             f_perime = a * b * hm**( b  - 1)
 
             S = f_perime
@@ -84,7 +86,7 @@ def estimate_mechanical_properties(Row_1,Row_2,R,n,m,h,d,to1,tol2,si = 20):
             Ac = pi*(2*R*hc - hc**2)
             a = sqrt(Ac/pi)
             e = 0.14*a/(R-h-(t-1)*d)
-            s = Fm/(3*Ac)
+            s = Fm/(3*Ac)*2
             EIIT = S*sqrt(pi)/(2*sqrt(Ac))
             Es = 0.91/(1/EIIT-8.729e-7)
             E = E+Es
@@ -92,26 +94,19 @@ def estimate_mechanical_properties(Row_1,Row_2,R,n,m,h,d,to1,tol2,si = 20):
             strain.append(e)
             plt.plot(e,s,'bo')
             plt.pause(0.3)
-
-
-        # Calling the curve_fit function
+                # Calling the curve_fit function
         params, covariance = curve_fit(f = power_fit, xdata = strain, ydata = stress)
         k = params[0]
+        k =k
         N = params[1]
-
-        
-
+        # print(strain)
+        # print(stress)
         if abs(n-N)>tol1:
             n = (n+N)/2
         else:          
             break
     n = N
     E = E/m
-
-
-
-
-
     #  Second Loop
     ee ={}
     j = 1
@@ -126,24 +121,25 @@ def estimate_mechanical_properties(Row_1,Row_2,R,n,m,h,d,to1,tol2,si = 20):
             # print('ey=',ey)
             # print('sy=',sy)
             break
-        
     # print('k=',k)
     # print('E=',E)
     # print('n=',n)
     # print('elastic=',E*ey)
     # print('plastic=',k*ey**N)
     x1 = np.array([0,sy/E])
-    x2 = np.array([ey,0.02,0.03,0.04,0.05,0.06,0.07,0.09,0.1,0.15,0.25])
-    plt.xlabel('Stress')
-    plt.ylabel('Strain')
+    x2 = np.array([ey,ey+0.02,ey+0.03,ey+0.04,ey+0.05,ey+0.06,ey+0.07,ey+0.09,ey+0.1])
+    plt.xlabel('ُStrain')
+    plt.ylabel('Stress')
     plt.plot(x1, x1*E,c='red',ls='-',lw=2) # elastic 
     plt.pause(0.05)
     plt.plot(x2, power_fit(x2,k,N),c='red',ls='-',lw=2) #plasti
+    # plt.plot(x2, k*x2**N,c='red',ls='-',lw=2) #plasti
     plt.pause(0.05)
-    plt.plot(sy/E,sy+0.02,'r.',markersize=10)
-    plt.pause(1)
+    plt.plot(sy/E+0.001,sy+0.02,'r.',markersize=20)
+    plt.pause(0.05)
     plt.show(block=False)
     return ey,sy,k,E,n
+
 
 
 
