@@ -27,7 +27,11 @@ basedir = os.path.dirname(__file__)
 import struct
 from datetime import datetime
 import matplotlib.pyplot as plt
-
+import random
+import sys
+import random
+from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget
+from PyQt5.QtCore import QTimer
 ####initial  parameters for base #########
 lvdt =[]
 loadcell=[]
@@ -4595,13 +4599,15 @@ class Ui_IIT(object):
 ################################################### 
     def plot(self,loadcell,lvdt):
         # print(loadcell,lvdt)
+        plt.clf()
         plt.plot(lvdt, loadcell)
         # Add labels and a title
         plt.xlabel('LVDT')
         plt.ylabel('load cell')
         plt.title('p-h')
         # Show the plot
-        plt.show()
+        plt.pause(0.001)
+
 ################### functions methods #################
 #### func update data load cell lvdt real time 
     def update_data_loadcell_lvdt(self):
@@ -4640,6 +4646,12 @@ class Ui_IIT(object):
                                                 self.plot(loadcell1,lvdt1)
                                         else:
                                                 self.plot(loadcell,lvdt)
+                                else:
+                                        if len(lvdt)%100 ==0 or len(lvdt1)%100 ==0:
+                                                if self.No_RS_Test.isChecked()==True:
+                                                        self.plot(loadcell1,lvdt1)
+                                                else:
+                                                        self.plot(loadcell,lvdt)
                                         
                                         
                                         
@@ -5081,6 +5093,8 @@ class Ui_IIT(object):
                 else:
                         global RS_Lee_1,RS_Lee_2
                         RS_Lee_1,RS_Lee_2 =estimate_residual_stress(lvdt,loadcell,lvdt1,loadcell1,kapa)
+                        RS_Lee_1 = round(RS_Lee_1*10**6,2)
+                        RS_Lee_2 = round(RS_Lee_2*10**6,2)
                         QMessageBox.about(self.iit, "residual_stress", f"RS1:{RS_Lee_1},RS2:{RS_Lee_2}")
 
 #######################################################################    
