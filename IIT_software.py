@@ -4705,8 +4705,9 @@ class Ui_IIT(object):
     def Engage_button_clicked(self):
             # remove before test data lvdt loadcell and lvdt1 and loadcell1
             global lvdt,loadcell,lvdt1,loadcell1
-            lvdt =[]
-            loadcell=[]
+            if self.No_RS_Test.isChecked()==False:
+                lvdt =[]
+                loadcell=[]
             lvdt1 = []
             loadcell1=[]
             try:
@@ -5080,6 +5081,8 @@ class Ui_IIT(object):
                 else:
                         global RS_Lee_1,RS_Lee_2
                         RS_Lee_1,RS_Lee_2 =estimate_residual_stress(lvdt,loadcell,lvdt1,loadcell1,kapa)
+                        QMessageBox.about(self.iit, "residual_stress", f"RS1:{RS_Lee_1},RS2:{RS_Lee_2}")
+
 #######################################################################    
     def retranslateUi(self, IIT):
         _translate = QtCore.QCoreApplication.translate
