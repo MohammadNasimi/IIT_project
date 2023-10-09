@@ -4617,20 +4617,20 @@ class Ui_IIT(object):
                     if ser.in_waiting > 0:
                         data = ser.readline().decode('ascii').rstrip()
                         data = data.split(';')
-                        self.label_load.setText(data[0])
-                        self.label_Depth.setText(data[1])
-                        print(datetime.now(),data[0],data[1])
+                        self.label_load.setText(data[0][0:4])
+                        self.label_Depth.setText(data[1][0:4])
+                        print(datetime.now(),data[0][1:6],data[1][0:5])
                         # Set up plot
                         max_depth = float(self.label_Maximum_Depth.text())
                         unlauding_rate = float(self.label_Unloading_ratio.text())
                         if self.Test_start_testflow.isEnabled() == True:
                                 if abs(float(data[0]))>0.2:
                                         if self.No_RS_Test.isChecked()==True:
-                                                loadcell1.append(abs(float(data[0])))
-                                                lvdt1.append(float(data[1]))
+                                                loadcell1.append(round(abs(float(data[0])),2))
+                                                lvdt1.append(round(float(data[1]),2))
                                         else:  
-                                                loadcell.append(abs(float(data[0])))
-                                                lvdt.append(float(data[1]))
+                                                loadcell.append(round(abs(float(data[0])),2))
+                                                lvdt.append(round(float(data[1]),2))
 
                                 if max_depth - float(data[1])  < 0.01:
                                         #after test do this code 
