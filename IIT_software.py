@@ -4969,6 +4969,8 @@ class Ui_IIT(object):
             self.Specific_move_speed.setEnabled(True)
             self.Manual_move_speed.setEnabled(False)
     def stop_button_clicked(self):
+        self.Test_start_testflow.setStyleSheet("background-color: rgb(204,204,204)")
+        self.Test_start_testflow.setEnabled(False)    
         try:
                 if ser.isOpen():
                         #     print("stop")
@@ -5075,7 +5077,12 @@ class Ui_IIT(object):
                 ey,sy,k,E,n =estimate_Mechanical_properties(lvdt,loadcell,Radius,Insert_strain,number_cycle
                                                 ,indentations_interval,first_indentation_depth,
                                                 Tol1,Tol2,depth_max_test,number_cycle_test,unloading_ratio_test)
-                QMessageBox.about(self.iit,"Mechanical properties", f"E:{E},n:{n},sy:{sy}")
+                E=round(E/1000,2)
+                ey=round(ey,2)
+                sy=round(sy,2)
+                k=round(k,2)
+                n=round(n,2)
+                QMessageBox.about(self.iit,"Mechanical properties", f"E:{E}////n:{n}////sy:{sy}")
 
     def residual_stress_button_clicked(self):
             if lvdt !=[]:
@@ -5095,7 +5102,7 @@ class Ui_IIT(object):
                         RS_Lee_1,RS_Lee_2 =estimate_residual_stress(lvdt,loadcell,lvdt1,loadcell1,kapa)
                         RS_Lee_1 = round(RS_Lee_1*10**6,2)
                         RS_Lee_2 = round(RS_Lee_2*10**6,2)
-                        QMessageBox.about(self.iit, "residual_stress", f"RS1:{RS_Lee_1},RS2:{RS_Lee_2}")
+                        QMessageBox.about(self.iit, "residual_stress", f"RS1:{RS_Lee_1}////RS2:{RS_Lee_2}")
 
 #######################################################################    
     def retranslateUi(self, IIT):
