@@ -4611,7 +4611,7 @@ class Ui_IIT(object):
                     if ser.in_waiting > 0:
                         data = ser.readline().decode('ascii').rstrip()
                         data = data.split(';')
-                        self.label_load.setText(abs(data[0]))
+                        self.label_load.setText(data[0])
                         self.label_Depth.setText(data[1])
                         print(datetime.now(),data[0],data[1])
                         # Set up plot
