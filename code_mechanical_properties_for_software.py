@@ -59,8 +59,8 @@ def estimate_p_h_max_slope(depth_max, number_cycle,unloading_ratio,depth,load):
         
     return P_Max,h_max,slop_cycle,Width_origin_cycle
 
-def estimate_Mechanical_properties(lvdt,loadcell,R,n,m,h,d,tol1,tol2,depth_max, number_cycle,unloading_ratio):    
-    P_Max,h_max,slop_cycle,Width_origin_cycle=estimate_p_h_max_slope(depth_max, number_cycle,unloading_ratio,lvdt,loadcell)
+def estimate_Mechanical_properties(depth,load,R,n,m,h,d,tol1,tol2,depth_max, number_cycle,unloading_ratio):   
+    P_Max,h_max,slop_cycle,Width_origin_cycle=estimate_p_h_max_slope(depth_max, number_cycle,unloading_ratio,depth,load)
     def power_fit(x,a,b):
         return a * x ** b
     while 1:
