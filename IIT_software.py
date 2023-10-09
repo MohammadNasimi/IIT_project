@@ -4613,7 +4613,7 @@ class Ui_IIT(object):
                         data = data.split(';')
                         self.label_load.setText(data[0])
                         self.label_Depth.setText(data[1])
-                        print(datetime.now(),data[0],data[1])
+                        # print(datetime.now(),data[0],data[1])
                         # Set up plot
                         max_depth = float(self.label_Maximum_Depth.text())
                         unlauding_rate = float(self.label_Unloading_ratio.text())
@@ -5058,12 +5058,10 @@ class Ui_IIT(object):
                 except:
                         QMessageBox.about(self.iit, "mechanical properties", "fill with float")
 
-                # print(Radius,Insert_strain,number_cycle,indentations_interval,first_indentation_depth,Tol1,Tol2)
-                # print(lvdt,loadcell)
                 global ey,sy,k,E,n
                 ey,sy,k,E,n =estimate_Mechanical_properties(lvdt,loadcell,Radius,Insert_strain,number_cycle
                                                 ,indentations_interval,first_indentation_depth,
-                                                Tol1,Tol2,number_cycle_test,depth_max_test,unloading_ratio_test)
+                                                Tol1,Tol2,depth_max_test,number_cycle_test,unloading_ratio_test)
     def residual_stress_button_clicked(self):
             if lvdt !=[]:
                 kapa = self.lineEdit_kapa.text()
