@@ -49,6 +49,8 @@ def estimate_p_h_max_slope(depth_max, number_cycle,unloading_ratio,depth,load):
                     # print(count,depth[i])
                     end =count-1
                     break
+            if depth_end_down == depth_max*unloading_ratio/100:
+                depth_end_down = depth_end_down +7
         end = start + int((end-start)/use_for_slope)
         x_linear, y_linear =  depth_change[start+20:end],load[start+20:end]
         popt, _ = curve_fit(objective_linear, x_linear,y_linear)
