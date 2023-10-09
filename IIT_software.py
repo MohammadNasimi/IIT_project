@@ -5062,6 +5062,8 @@ class Ui_IIT(object):
                 ey,sy,k,E,n =estimate_Mechanical_properties(lvdt,loadcell,Radius,Insert_strain,number_cycle
                                                 ,indentations_interval,first_indentation_depth,
                                                 Tol1,Tol2,depth_max_test,number_cycle_test,unloading_ratio_test)
+                QMessageBox.about(self.iit,"Mechanical properties", f"E:{E},n:{n},sy:{sy}")
+
     def residual_stress_button_clicked(self):
             if lvdt !=[]:
                 kapa = self.lineEdit_kapa.text()
