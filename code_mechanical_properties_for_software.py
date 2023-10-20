@@ -63,6 +63,14 @@ def estimate_p_h_max_slope(depth_max, number_cycle,unloading_ratio,depth,load):
 
 def estimate_Mechanical_properties(depth,load,R,n,m,h,d,tol1,tol2,depth_max, number_cycle,unloading_ratio):   
     P_Max,h_max,slop_cycle,Width_origin_cycle=estimate_p_h_max_slope(depth_max, number_cycle,unloading_ratio,depth,load)
+    fig, (ax1, ax3) = plt.subplots(nrows=2, ncols=1, figsize=(6, 6), gridspec_kw={'height_ratios': [3, 1]})
+    ax1.set_xlabel('Strain')
+    ax1.set_ylabel('Stress')
+    # Hide the tick marks and labels for the third subplot
+    ax3.axes.get_xaxis().set_visible(False)
+    ax3.axes.get_yaxis().set_visible(False)
+    # Adjust the spacing between subplots
+    plt.tight_layout()
     def power_fit(x,a,b):
         return a * x ** b
     while 1:
@@ -94,7 +102,7 @@ def estimate_Mechanical_properties(depth,load,R,n,m,h,d,tol1,tol2,depth_max, num
             E = E+Es
             stress.append(s)
             strain.append(e)
-            plt.plot(e,s,'bo')
+            ax1.plot(e,s,'bo')
             plt.pause(0.3)
                 # Calling the curve_fit function
         params, covariance = curve_fit(f = power_fit, xdata = strain, ydata = stress)
@@ -128,17 +136,30 @@ def estimate_Mechanical_properties(depth,load,R,n,m,h,d,tol1,tol2,depth_max, num
     # print('n=',n)
     # print('elastic=',E*ey)
     # print('plastic=',k*ey**N)
+    x = [1.5,3.5]
+    # Add values below the plots in the third subplot
+    ax3.text(x[0], 2.5, f'Elasticity = {round(E/1000,2)} Gpa', ha='center', va='top'
+             ,fontsize=11, color='black', style='italic')
+    ax3.text(x[1], 2.5, f'Strain hardening(n) = {round(n,2)}', ha='center', va='top'
+             ,fontsize=11, color='black', style='italic')
+    # ax3.text(x[0], -2, f'Yield strain = {round(ey,4)}', ha='center', va='top')
+    ax3.text(x[0], -2, f'Yield stress = {round(sy,2)} Mpa', ha='center', va='top'
+             ,fontsize=12, color='black', style='italic')
+
+    # Set the x-axis limit for the third subplot
+    ax3.set_xlim(min(x) - 1, max(x) + 1)
+    ax3.set_ylim(-5, 5)
+    
     x1 = np.array([0,sy/E])
     x2 = np.array([ey,ey+0.02,ey+0.03,ey+0.04,ey+0.05,ey+0.06,ey+0.07,ey+0.09,ey+0.1])
-    plt.xlabel('ُStrain')
-    plt.ylabel('Stress')
-    plt.plot(x1, x1*E,c='red',ls='-',lw=2) # elastic 
+    ax1.plot(x1, x1*E,c='red',ls='-',lw=2) # elastic 
     plt.pause(0.05)
-    plt.plot(x2, power_fit(x2,k,N),c='red',ls='-',lw=2) #plasti
+    ax1.plot(x2, power_fit(x2,k,N),c='red',ls='-',lw=2) #plasti
     # plt.plot(x2, k*x2**N,c='red',ls='-',lw=2) #plasti
     plt.pause(0.05)
-    plt.plot(sy/E+0.001,sy+0.02,'r.',markersize=20)
+    ax1.plot(sy/E+0.001,sy+0.02,'r.',markersize=20)
     plt.pause(0.05)
+    
     plt.show(block=False)
     return ey,sy,k,E,n
 
