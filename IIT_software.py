@@ -5072,7 +5072,7 @@ class Ui_IIT(object):
                         unloading_ratio_test =float(unloading_ratio_test)
                 except:
                         QMessageBox.about(self.iit, "mechanical properties", "fill with float")
-
+                        
                 global ey,sy,k,E,n
                 ey,sy,k,E,n =estimate_Mechanical_properties(lvdt,loadcell,Radius,Insert_strain,number_cycle
                                                 ,indentations_interval,first_indentation_depth,
@@ -5082,7 +5082,7 @@ class Ui_IIT(object):
                 sy=round(sy,2)
                 k=round(k,2)
                 n=round(n,2)
-                QMessageBox.about(self.iit,"Mechanical properties", f"E:{E}////n:{n}////sy:{sy}")
+                # QMessageBox.about(self.iit,"Mechanical properties", f"E:{E}////n:{n}////sy:{sy}")
 
     def residual_stress_button_clicked(self):
             if lvdt !=[]:
